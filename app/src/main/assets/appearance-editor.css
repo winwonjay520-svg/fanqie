@@ -1,0 +1,87 @@
+.appearance-overlay .appearance-sample {
+  height: clamp(106px, 17vh, 165px);
+  border-radius: 22px;
+}
+.appearance-sample .sample-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 164px;
+  padding: 13px 20px;
+  border-radius: 20px;
+  text-align: left;
+  color: var(--ink);
+}
+.sample-card .sample-clock {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+.sample-clock svg { width: 19px; height: 19px; }
+.sample-card div > span { font-size: 11px; color: var(--sub); }
+.sample-card strong {
+  display: block;
+  font-size: 29px;
+  line-height: 1.1;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+}
+.appearance-sections {
+  display: flex;
+  gap: 4px;
+  margin: 16px 0;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+}
+.appearance-sections button {
+  flex: 1;
+  min-height: 38px;
+  border-radius: 11px;
+  color: var(--sub);
+}
+.appearance-sections button[aria-pressed="true"] {
+  background: rgba(var(--glass-tint), .86);
+  box-shadow: 0 1px 4px #0002, inset 0 0 0 1px var(--line);
+  color: var(--ink);
+  font-weight: 600;
+}
+.appearance-overlay .solid-mode-options { margin: 0; }
+.appearance-overlay .solid-mode-options button { min-height: 62px; }
+.appearance-overlay .wallpaper-presets { margin: 12px 0; }
+.appearance-overlay .appearance-details {
+  border-top: 1px solid var(--line);
+  margin-top: 16px;
+}
+.appearance-details summary {
+  padding: 14px 2px;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 550;
+}
+.appearance-overlay #previewDone { margin-top: 16px; }
+.appearance-overlay .appearance-footer { margin-top: 8px; }
+.appearance-overlay .appearance-footer button { min-height: 40px; font-size: 12px; }
+.appearance-overlay [hidden] { display: none !important; }
+@media (min-width: 900px) and (min-height: 560px) {
+  .appearance-overlay .sheet { max-width: 740px; }
+  .appearance-overlay #sheetBody {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: 24px;
+    align-items: start;
+  }
+  .appearance-overlay .appearance-sample {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    height: 100%;
+    min-height: 220px;
+  }
+  .appearance-overlay #sheetBody > :not(.appearance-sample) { grid-column: 2; }
+  .appearance-overlay .appearance-sections { margin-top: 0; }
+}

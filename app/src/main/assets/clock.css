@@ -1,0 +1,69 @@
+/* The large clock has an opaque black face in every app theme. */
+#largeClock {
+  background: #000;
+  color: #f5f5f5;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color-scheme: dark;
+}
+#largeClock #clockTime {
+  color: #f5f5f5;
+  font-weight: 300;
+  text-shadow: none;
+}
+#largeClock #clockDate { color: #858585; }
+#largeClock #clockTask { color: #aaa; }
+#largeClock .clock-toolbar button {
+  color: #999;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+#largeClock .clock-toolbar button.selected {
+  color: #fff;
+  background: #202020;
+  border-color: #303030;
+}
+#largeClock .clock-controls button {
+  color: #eee;
+  background: #141414;
+  border: 1px solid #303030;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+#largeClock .clock-controls span { color: #777; }
+#largeClock[data-style=ring] .clock-center {
+  background: transparent;
+  border-color: #383838;
+  box-shadow: inset 0 0 0 4px #141414;
+}
+
+/* Split-flap clock: only the two moving half-cards animate, for 440 ms. */
+#largeClock[data-style=digital] #clockTime{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap}
+#largeClock #clockDigits{display:flex;align-items:center;justify-content:center;gap:.045em;margin:19px 0 15px;font-family:"Roboto","Helvetica Neue",sans-serif;font-weight:500;font-size:min(31vh,19vw);font-variant-numeric:tabular-nums;line-height:1.2;letter-spacing:0;direction:ltr}
+#largeClock #clockDigits[data-digits="6"]{font-size:min(31vh,15vw)}
+#largeClock #clockDigits[data-digits="7"],#largeClock #clockDigits[data-digits="8"]{font-size:min(28vh,12vw)}
+#largeClock[data-style=ring] #clockDigits{display:none}
+#largeClock .flip-digit{position:relative;display:block;width:.69em;height:1.2em;perspective:700px;flex-shrink:0}
+#largeClock .flip-half{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:#1c1c1c;color:#f1f1f1;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+#largeClock .flip-half>span{position:absolute;left:0;right:0;height:200%;display:flex;justify-content:center;align-items:center}
+#largeClock .flip-top{top:0;border-radius:.065em .065em 0 0;background:#191919}
+#largeClock .flip-top>span{top:0}
+#largeClock .flip-bottom{bottom:0;border-radius:0 0 .065em .065em}
+#largeClock .flip-bottom>span{bottom:0}
+#largeClock .flip-out,#largeClock .flip-in{display:none;z-index:3}
+#largeClock .flip-out{transform-origin:50% 100%}
+#largeClock .flip-in{transform-origin:50% 0}
+#largeClock .flipping .flip-out{display:block;animation:flap-out 220ms ease-in both}
+#largeClock .flipping .flip-in{display:block;animation:flap-in 220ms 220ms ease-out both}
+#largeClock .flip-seam{position:absolute;top:50%;left:0;right:0;height:2px;background:#000b;transform:translateY(-50%);z-index:4;pointer-events:none}
+#largeClock .flip-seam:before,#largeClock .flip-seam:after{content:"";position:absolute;top:-2px;width:3px;height:6px;background:#444;border-radius:1px}
+#largeClock .flip-seam:before{left:0}#largeClock .flip-seam:after{right:0}
+#largeClock .flip-colon{display:block;position:relative;width:.18em;height:1.2em;flex-shrink:0}
+#largeClock .flip-colon:before,#largeClock .flip-colon:after{content:"";position:absolute;left:50%;width:.035em;height:.035em;border-radius:50%;background:#666;transform:translateX(-50%)}
+#largeClock .flip-colon:before{top:39%}#largeClock .flip-colon:after{bottom:39%}
+@keyframes flap-out{from{transform:rotateX(0);filter:brightness(1)}to{transform:rotateX(-90deg);filter:brightness(.55)}}
+@keyframes flap-in{from{transform:rotateX(90deg);filter:brightness(.55)}to{transform:rotateX(0);filter:brightness(1)}}
+@media(orientation:landscape){#largeClock{padding:12px 22px}#largeClock .clock-center{min-height:0}#largeClock .clock-toolbar button{padding:8px 12px}}
+@media(prefers-reduced-motion:reduce){#largeClock .flipping .flip-out,#largeClock .flipping .flip-in{display:none}}

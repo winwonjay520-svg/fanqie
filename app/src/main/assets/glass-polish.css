@@ -1,0 +1,192 @@
+/* Edges carry the highlight, leaving the centre of each pane clear. */
+body {
+  --pane-light: #ffffffc7;
+  --pane-line: #21272c25;
+  --pane-shadow: #17212d0c;
+  --pane-depth: inset 0 1px 0 var(--pane-light), inset 0 -1px 0 #ffffff12,
+                0 3px 8px var(--pane-shadow), 0 12px 34px var(--pane-shadow);
+}
+body.theme-dark {
+  --pane-light: #ffffff33;
+  --pane-line: #ffffff26;
+  --pane-shadow: #00000027;
+}
+
+body.photo-background {
+  --pane-tint: var(--photo-tint);
+  --photo-ink: #142232;
+  --photo-sub: #253442;
+  /* The wallpaper veil already contributes contrast. Ease in the extra tint
+     so the entire coverage slider responds, even with text protection on. */
+  --reading-floor: max(.18, calc(.56 - var(--wallpaper-dim) * .48));
+  --pane-fill: calc(var(--reading-floor) + (.85 - var(--reading-floor)) * var(--glass-alpha) * var(--glass-alpha));
+}
+body.photo-background.theme-dark {
+  --photo-ink: #fff;
+  --photo-sub: #f1f5fc;
+  --reading-floor: max(.30, calc(.67 - var(--wallpaper-dim) * .44));
+}
+body.photo-background[data-legibility=false] {
+  --pane-fill: var(--glass-alpha);
+}
+body.palette-theme {
+  --pane-tint: var(--palette-tint);
+  --pane-fill: calc(.17 + .60 * var(--glass-alpha));
+}
+body.liquid {
+  --pane-filter: blur(7px) saturate(1.12);
+}
+body.liquid[data-material=soft] {
+  --pane-filter: blur(17px) saturate(1.04);
+}
+body.photo-background :is(.todo-heading,.todo-setup-heading,#todoSetup>.heading-row) {
+  border-radius: 18px;
+  background: rgba(var(--pane-tint), .90);
+  padding: 9px 14px;
+}
+body.photo-background #todoWorkflow {
+  border-radius: 22px;
+  background: rgba(var(--pane-tint), .90);
+  padding-inline: 15px;
+  color: var(--ink);
+}
+
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+  body:is(.photo-background,.palette-theme).liquid:not([data-material=eco]) .glass {
+    background: rgba(var(--pane-tint), var(--pane-fill));
+    border-color: var(--pane-line);
+    box-shadow: var(--pane-depth);
+    -webkit-backdrop-filter: var(--pane-filter);
+    backdrop-filter: var(--pane-filter);
+  }
+  body:is(.photo-background,.palette-theme).liquid:not([data-material=eco]) .glass::before {
+    background: radial-gradient(ellipse 95% 23% at 6% 0%, #ffffff40, transparent 75%);
+    opacity: .34;
+  }
+  body:is(.photo-background,.palette-theme).liquid:not([data-material=eco]) .glass.touched::before {
+    opacity: .8;
+  }
+  body:is(.photo-background,.palette-theme).liquid:not([data-material=eco]) .sheet {
+    background: rgba(var(--pane-tint), max(.79, var(--pane-fill)));
+    border-color: var(--pane-line);
+    box-shadow: inset 0 1px 0 var(--pane-light), 0 19px 66px #0003;
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+  body.photo-background.liquid:not([data-material=eco]) :is(.app>header, .page>.heading-row, .page>h1,
+        .page>.page-subtitle, .page>.eyebrow, .page>.section-title, .focus-secondary>.section-title, .daily-goal) {
+    background: rgba(var(--pane-tint), var(--pane-fill));
+  }
+  body.photo-background.liquid:not([data-material=eco]) .app>header {
+    border-color: var(--pane-line);
+    box-shadow: var(--pane-depth);
+  }
+  /* Text headings over a custom photo also need a local veil, including
+     the list and draft routes whose headings sit outside the page cards. */
+  body.photo-background.liquid:not([data-material=eco]) :is(.todo-heading,.todo-setup-heading,
+        #todoSetup>.heading-row,#todoWorkflow) {
+    background: rgba(var(--pane-tint), var(--pane-fill));
+  }
+  /* Keep a denser surface under the dock labels when content scrolls below. */
+  body:is(.photo-background,.palette-theme).liquid:not([data-material=eco]) .bottom-nav {
+    background: rgba(var(--pane-tint), max(.62, var(--pane-fill)));
+    box-shadow: inset 0 1px 0 var(--pane-light), 0 4px 18px #071a2f24;
+  }
+  #focusScene[data-background=photo][data-liquid=true]:not([data-material=eco]) :is(.scene-glass,.scene-dial) {
+    background: rgba(var(--photo-scene-tint,18,28,40), max(.42, var(--pane-fill)));
+    border: 1px solid #ffffff51;
+    box-shadow: inset 0 1px 0 #ffffff52, 0 8px 30px #0001;
+  }
+  #focusScene[data-background=photo][data-liquid=true]:not([data-material=eco]) .scene-glass {
+    -webkit-backdrop-filter: var(--pane-filter);
+    backdrop-filter: var(--pane-filter);
+  }
+  #focusScene[data-background=gradient][data-liquid=true]:not([data-material=eco]) :is(.scene-glass,.scene-dial) {
+    background: rgba(var(--pane-tint), var(--pane-fill));
+  }
+}
+
+/* Neutral glass uses stationary reflections on the plain background. */
+body[data-wallpaper=white] {
+  --solid-pane: linear-gradient(137deg, #fff 14%, #fafafa 79%, #fff) #fff;
+  --hero-ink: #fff;
+  --hero-face: linear-gradient(145deg, #494949, #272727 65%, #383838);
+  --hero-edge: #272727;
+  --dock-tint: 255,255,255;
+}
+body[data-wallpaper=black] {
+  --solid-pane: linear-gradient(137deg, #202020, #101010 64%, #161616) #111;
+  --hero-ink: #1c1c1c;
+  --hero-face: linear-gradient(145deg, #fafafa, #cecece 75%, #e7e7e7);
+  --hero-edge: #e4e4e4;
+  --dock-tint: 22,22,22;
+}
+body[data-wallpaper=white][data-material=soft] {
+  --solid-pane: radial-gradient(ellipse at 16% 8%, #fff, transparent 72%), #f3f3f3;
+}
+body[data-wallpaper=black][data-material=soft] {
+  --solid-pane: radial-gradient(ellipse at 16% 8%, #282828, transparent 72%), #111;
+}
+body.liquid:is([data-wallpaper=white],[data-wallpaper=black]):not([data-material=eco])
+    :is(.todo-free-focus,.todo-empty,.todo-setup-panel,.workspace-overview>.glass,.event-card,.summary-card,.sample-card,.sheet) {
+  background: var(--solid-pane);
+  border-color: var(--pane-line);
+  box-shadow: var(--pane-depth);
+}
+body.liquid:is([data-wallpaper=white],[data-wallpaper=black]):not([data-material=eco])
+    :is(.todo-free-icon,#todoFirst,#todoStartSelected,#addTodoButton) {
+  background: var(--hero-face);
+  color: var(--hero-ink);
+  border: 1px solid var(--hero-edge);
+  box-shadow: inset 0 1px 1px #ffffff52, 0 4px 10px var(--pane-shadow);
+}
+body.liquid:is([data-wallpaper=white],[data-wallpaper=black]):not([data-material=eco]) :is(#todoFirst,#todoStartSelected,#addTodoButton) svg {
+  color: var(--hero-ink);
+}
+body.liquid:is([data-wallpaper=white],[data-wallpaper=black]):not([data-material=eco]) .bottom-nav {
+  background: rgba(var(--dock-tint), .92);
+  border-color: var(--pane-line);
+  box-shadow: inset 0 1px 0 var(--pane-light), 0 6px 23px var(--pane-shadow);
+}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+  body.liquid:is([data-wallpaper=white],[data-wallpaper=black]):not([data-material=eco]) .bottom-nav {
+    background: rgba(var(--dock-tint), .74);
+    -webkit-backdrop-filter: var(--pane-filter);
+    backdrop-filter: var(--pane-filter);
+  }
+}
+body.liquid:not([data-material=eco]) .todo-free-action {
+  padding: 8px 10px;
+  border: 1px solid var(--pane-line);
+  border-radius: 24px;
+  color: var(--ink);
+}
+body.liquid:not([data-material=eco]) .todo-preview-dial {
+  box-shadow: inset 0 1px 0 var(--pane-light), inset 0 0 0 5px #8888880b;
+}
+body.liquid:not([data-material=eco]) .todo-card-start {
+  border-radius: 24px;
+  box-shadow: inset 0 1px 0 #ffffff60, 0 3px 9px #0000000d;
+}
+.todo-card[data-cover=photo]::before {
+  background: linear-gradient(105deg, #101521b8, #10152177 70%, #101521a8);
+}
+
+/* Automatic covers share the user's wallpaper. A list of many tasks only
+   composites tint and highlights, without a blur pass on every row. */
+body.photo-background.liquid:not([data-material=eco]) .todo-card[data-auto-cover=true] {
+  color: var(--photo-ink);
+  background: rgba(var(--pane-tint), var(--pane-fill));
+  border: 1px solid var(--pane-line);
+  box-shadow: var(--pane-depth);
+}
+body.photo-background.liquid:not([data-material=eco]) .todo-card[data-auto-cover=true]::before {
+  background: linear-gradient(142deg, #ffffff1f, transparent 45%);
+}
+body.photo-background.liquid:not([data-material=eco]) .todo-card[data-auto-cover=true] small {
+  opacity: 1;
+  color: var(--photo-sub);
+}
+@media(max-width:380px) {
+  body.liquid:not([data-material=eco]) .todo-free-action { padding: 6px 8px; }
+}

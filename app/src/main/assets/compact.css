@@ -1,0 +1,37 @@
+/* Keep primary timer controls above the navigation on compact phones. */
+@media(max-height:740px) {
+ header{height:56px}
+ .eyebrow{font-size:8px;letter-spacing:1.6px;margin:5px 0 9px}
+ #focusPage .heading-row{margin-bottom:17px}
+ #focusPage h1{font-size:25px;letter-spacing:0;line-height:1.45}
+ #focusPage h1 br{display:none}
+ #focusPage .little-orbit{display:none}
+ .segmented{min-height:42px;margin-bottom:12px;border-radius:15px;padding:4px}
+ .segmented button{border-radius:11px;font-size:12px}
+ .timer-panel{padding:13px 18px 12px;border-radius:25px}
+ .task-pill{padding:5px 10px;font-size:10px}
+ .timer-orb{width:185px;height:185px;margin:9px auto 7px}
+ .timer-orb:before{inset:12px}
+ .time{font-size:45px;letter-spacing:-2px}
+ .time.long{font-size:33px}
+ .timer-mode-label{font-size:7px;letter-spacing:2.4px;margin-bottom:5px}
+ .timer-caption{font-size:9px;letter-spacing:1px;margin-top:5px}
+ .presets{margin:9px 0 13px;min-height:28px}
+ .presets button{padding:6px 10px;font-size:10px}
+ .timer-controls .primary{height:44px;border-radius:14px}
+ .round-button{height:36px;width:36px}
+ .timer-footnote{margin-top:11px;font-size:8px}
+ .timer-footnote svg{width:10px;height:10px}
+ .bottom-nav{height:62px;bottom:12px;border-radius:21px}
+ .bottom-nav button{gap:4px;border-radius:15px}
+ .bottom-nav button svg{width:19px;height:19px}
+ .mode-note{min-height:28px;font-size:10px}
+}
+@media(max-height:570px) {
+ .timer-orb{width:150px;height:150px}
+ .timer-footnote{display:none}
+ #focusPage .eyebrow{display:none}
+ .time{font-size:36px}
+ .timer-mode-label{font-size:6px}
+ .timer-caption{font-size:8px}
+}

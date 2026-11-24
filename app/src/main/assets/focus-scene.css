@@ -1,0 +1,99 @@
+/* Dedicated secondary route. Its timer is a view of the single native timer. */
+body.focus-scene-open{overflow:hidden}
+body.focus-scene-open>.app{visibility:hidden}
+#focusScene{position:fixed;inset:0;z-index:20;isolation:isolate;display:flex;flex-direction:column;gap:12px;padding:18px 24px;color:#fff;background:#284a66;overflow:auto;overscroll-behavior:contain;animation:scene-enter .24s ease}
+#focusScene .scene-wallpaper{position:absolute;inset:0;z-index:-3;background-image:var(--scene-image);background-size:cover;background-position:50% var(--wallpaper-position,50%);filter:blur(var(--wallpaper-blur,0px));transform:scale(1.04);pointer-events:none}
+#focusScene .scene-shade{position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,#06172b77,transparent 38%,#06172b88),rgba(0,0,0,var(--scene-dim,.3));pointer-events:none}
+#focusScene button{color:#fff}
+#focusScene .scene-glass{background:linear-gradient(135deg,#ffffff24,#ffffff05),#07182b6e;border:1px solid #ffffff5e;box-shadow:inset 0 1px 1px #ffffff6b,0 7px 24px #06101e14;backdrop-filter:blur(14px) saturate(1.15);-webkit-backdrop-filter:blur(14px) saturate(1.15)}
+#focusScene .scene-toolbar{width:min(100%,1280px);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;min-height:44px}
+#focusScene .scene-toolbar>button{display:flex;align-items:center;gap:6px;border-radius:15px;padding:9px 12px;min-height:44px;font-size:12px}
+#focusScene .scene-toolbar h2{font-size:12px;letter-spacing:2px;font-weight:400;opacity:.7;white-space:nowrap}
+#focusScene .scene-toolbar-tools{display:flex;gap:8px}
+#focusScene .scene-toolbar-tools button{display:grid;place-items:center;width:44px;height:44px;border-radius:15px}
+#focusScene button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8}
+#focusScene .scene-quote{display:flex;align-items:start;gap:12px;max-width:680px;min-height:48px;width:100%;margin:0 auto;text-align:left;justify-content:center;padding:5px 10px;font-size:16px;line-height:1.8;text-shadow:0 2px 12px #0007}
+#focusScene .scene-quote>span:first-child{font-size:38px;line-height:1.1}
+#focusScene .scene-main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:4px 0}
+#focusScene .scene-clock-area{flex:1;width:100%;min-height:0;display:grid;place-items:center}
+#focusScene .scene-dial{position:relative;width:min(76vw,42dvh,440px);aspect-ratio:1;flex-shrink:0;display:grid;place-items:center;border-radius:50%;background:#04101d5c;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);box-shadow:inset 0 0 0 1px #ffffff30,0 18px 55px #06162816}
+#focusScene .scene-progress{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:none;transform:rotate(-90deg);pointer-events:none}
+#focusScene .scene-ring-track{fill:none;stroke:#ffffff26;stroke-width:2}
+#focusScene #sceneArc{fill:none;stroke:#fff;stroke-width:2.4;stroke-dasharray:791.681;stroke-linecap:round;transition:stroke-dashoffset .4s linear}
+#focusScene .scene-digits-wrap{width:76%;text-align:center}
+#focusScene #sceneMode{font-size:10px;letter-spacing:3px;margin-bottom:15px;opacity:.82}
+#focusScene #sceneDigits svg{display:block;width:100%;height:auto;fill:currentColor;stroke:none;overflow:visible}
+#focusScene #sceneDigits polygon{opacity:.08}#focusScene #sceneDigits polygon.on{opacity:.98}
+#focusScene .scene-accessible-time{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%)}
+#focusScene .scene-caption{text-align:center;max-width:min(90vw,660px);flex-shrink:0}
+#focusScene .scene-task{font-size:17px;font-weight:550;line-height:1.6;border-radius:17px;padding:10px 18px;max-width:100%;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#focusScene .scene-task:disabled{opacity:1;cursor:default}
+#focusScene #sceneStatus{font-size:12px;line-height:1.8;margin-top:8px;text-shadow:0 1px 8px #0008}
+#focusScene .scene-footer{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;padding-top:8px}
+#focusScene .scene-dock{display:flex;gap:12px;align-items:center;justify-content:center;padding:7px 13px;border-radius:25px}
+#focusScene .scene-dock button{display:grid;place-items:center;min-width:46px;height:46px;border-radius:16px}
+#focusScene .scene-dock button:disabled{opacity:.3}
+#focusScene .scene-dock .scene-toggle{width:62px;height:50px;background:#ffffff20;border:1px solid #ffffff55}
+#focusScene .scene-dock .scene-toggle svg{width:25px;height:25px}
+#focusScene .scene-quiet-toggle{width:56px;min-height:36px;display:grid;place-items:center;padding:4px}
+#focusScene #sceneReveal{padding:11px 22px;min-height:44px;border-radius:15px;font-size:13px}
+#focusScene[data-material=eco] .scene-glass,#focusScene[data-liquid=false] .scene-glass{backdrop-filter:none;-webkit-backdrop-filter:none;background:#10263de6;box-shadow:none}
+#focusScene[data-material=eco] .scene-dial,#focusScene[data-liquid=false] .scene-dial{backdrop-filter:none;-webkit-backdrop-filter:none}
+#focusScene[data-material=eco] .scene-wallpaper{filter:none}
+.timer-orb[role=button]{cursor:pointer}.timer-orb[role=button]:focus-visible{outline:2px solid #8caec3;outline-offset:4px}
+@media(min-width:700px){
+ #focusScene{padding:26px 36px;gap:20px}
+ #focusScene .scene-dial{width:min(64dvh,60vw,680px)}
+ #focusScene .scene-quote{font-size:23px;min-height:64px}
+ #focusScene .scene-toolbar h2{font-size:15px}
+ #focusScene .scene-toolbar>button{font-size:14px}
+ #focusScene .scene-toolbar-tools button{width:48px;height:48px}
+ #focusScene .scene-main{gap:24px}
+ #focusScene #sceneMode{font-size:15px;letter-spacing:5px;margin-bottom:26px}
+ #focusScene .scene-task{font-size:23px;padding:12px 24px}
+ #focusScene #sceneStatus{font-size:15px;margin-top:12px}
+ #focusScene .scene-dock{gap:22px;padding:10px 24px}
+ #focusScene .scene-dock button{width:56px;height:56px}
+ #focusScene .scene-dock .scene-toggle{width:76px;height:58px}
+ #focusScene .scene-dock button svg{width:25px;height:25px}
+}
+@media(max-width:420px){#focusScene .scene-toolbar h2{display:none}#focusScene{padding:14px 18px}#focusScene .scene-toolbar-tools{gap:6px}}
+@media(max-height:740px) and (orientation:portrait){#focusScene .scene-dial{width:min(72vw,38dvh,330px)}#focusScene .scene-main{gap:12px}#focusScene .scene-quote{font-size:15px;min-height:40px}#focusScene .scene-task{font-size:15px;padding:7px 14px}#focusScene .scene-footer{padding-top:0}}
+@media(max-height:600px) and (orientation:landscape){
+ #focusScene{padding:10px 22px;gap:8px}
+ #focusScene .scene-quote{display:none}
+ #focusScene .scene-main{flex-direction:row;gap:26px;padding:0;min-height:0}
+ #focusScene .scene-clock-area{flex:0 1 52%;min-width:0;height:100%}
+ #focusScene .scene-dial{width:min(58dvh,44vw,340px)}
+ #focusScene .scene-caption{max-width:42vw}
+ #focusScene .scene-task{font-size:16px;padding:8px 16px}
+ #focusScene #sceneStatus{font-size:12px}
+ #focusScene #sceneMode{font-size:9px;margin-bottom:10px;letter-spacing:2px}
+ #focusScene .scene-footer{padding:0}
+ #focusScene .scene-dock{padding:5px 14px;gap:14px}
+ #focusScene .scene-dock button,#focusScene .scene-dock .scene-toggle{height:44px;min-height:44px;width:48px}
+ #focusScene .scene-quiet-toggle{position:absolute;right:22px;bottom:16px}
+ #focusScene .scene-toolbar-tools button{width:44px;height:44px}
+}
+/* Solid routes follow the selected palette even when a photo remains stored. */
+#focusScene[data-tone=light]{--scene-ink:#303030;--scene-surface:#fff;--scene-edge:#e5e5e5;--scene-track:#ededed;--scene-toggle:#f3f3f3;color:var(--scene-ink);background:#fff}
+#focusScene[data-tone=dark]{--scene-ink:#e8e8e8;--scene-surface:#111;--scene-edge:#333;--scene-track:#303030;--scene-toggle:#292929}
+#focusScene[data-background=solid][data-tone=dark]{background:#000;color:var(--scene-ink)}
+#focusScene[data-background=solid] :is(.scene-wallpaper,.scene-shade){display:none}
+#focusScene[data-background=solid] :is(.scene-glass,.scene-dial),#focusScene[data-tone=light] :is(.scene-glass,.scene-dial){background:var(--scene-surface);border:1px solid var(--scene-edge);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+#focusScene[data-background=solid] button,#focusScene[data-tone=light] button{color:var(--scene-ink)}
+#focusScene[data-background=solid] :is(.scene-quote,#sceneStatus),#focusScene[data-tone=light] :is(.scene-quote,#sceneStatus){text-shadow:none}
+#focusScene[data-background=solid] .scene-ring-track,#focusScene[data-tone=light] .scene-ring-track{stroke:var(--scene-track)}
+#focusScene[data-background=solid] #sceneArc,#focusScene[data-tone=light] #sceneArc{stroke:var(--scene-ink)}
+#focusScene[data-background=solid] .scene-toggle,#focusScene[data-tone=light] .scene-toggle{background:var(--scene-toggle);border-color:var(--scene-edge)}
+#focusScene[data-tone=light] .scene-shade{background:rgba(255,255,255,var(--wallpaper-dim,.28))}
+#focusScene[data-background=gradient]{background:var(--palette-bg);color:var(--palette-ink)}
+#focusScene[data-background=gradient] button{color:var(--palette-ink)}
+#focusScene[data-background=gradient] :is(.scene-glass,.scene-dial){background:rgba(var(--palette-tint),.64);border-color:#ffffff55;box-shadow:inset 0 1px 1px #ffffff44}
+#focusScene[data-background=gradient] .scene-toggle{background:var(--palette-button);border-color:#ffffff66;color:var(--palette-button-ink)}
+#focusScene[data-background=gradient] #sceneArc{stroke:var(--palette-accent)}
+#focusScene[data-background=photo] :is(.scene-glass,.scene-dial){background:linear-gradient(135deg,#ffffff20,#ffffff04),rgba(var(--photo-scene-tint,18,28,40),.76);border-color:#ffffff55}
+#focusScene[data-background=photo] .scene-toggle{background:rgba(var(--photo-scene-tint,18,28,40),.9);border-color:#ffffff66}
+#focusScene[data-background=photo] #sceneArc{stroke:var(--photo-scene-accent,#fff)}
+@keyframes scene-enter{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){#focusScene{animation:none}#focusScene #sceneArc{transition:none}}

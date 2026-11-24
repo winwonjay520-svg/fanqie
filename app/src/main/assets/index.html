@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><meta name="theme-color" content="#ffffff"><title>番茄</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<link rel="stylesheet" href="compact.css">
+<link rel="stylesheet" href="appearance.css">
+<link rel="stylesheet" href="enhancements.css">
+<link rel="stylesheet" href="white-glass.css">
+<link rel="stylesheet" href="charts.css">
+<link rel="stylesheet" href="workspace.css">
+<link rel="stylesheet" href="pure-white.css">
+<link rel="stylesheet" href="tablet.css">
+<link rel="stylesheet" href="photo-glass.css">
+<link rel="stylesheet" href="reference-stats.css">
+<link rel="stylesheet" href="solid-themes.css">
+<link rel="stylesheet" href="palette-themes.css">
+<link rel="stylesheet" href="todo-home.css">
+<link rel="stylesheet" href="event-date-picker.css">
+<link rel="stylesheet" href="clock.css">
+<link rel="stylesheet" href="focus-scene.css">
+<link rel="stylesheet" href="glass-polish.css">
+<link rel="stylesheet" href="appearance-editor.css">
+<link rel="stylesheet" href="nav-gesture.css">
+<div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="wallpaper-layer" aria-hidden="true"><div class="wallpaper-image"></div><div class="wallpaper-shade"></div></div>
+<div class="app">
+  <header><div class="brand"><div class="brand-icon" data-icon="spark"></div><span>番茄</span></div><div class="header-actions"><button class="icon-button glass" id="appearanceButton" aria-label="背景与液态玻璃"></button><button class="icon-button glass" id="settingsButton" aria-label="设置" data-icon="settings"></button></div></header>
+  <main>
+    <section id="focusPage" class="page active">
+      <div class="eyebrow" id="todayLabel"></div>
+      <div class="heading-row"><h1>把此刻，<br>留给重要的事<span class="heading-dot">。</span></h1><div class="little-orbit" aria-hidden="true"><span>✦</span></div></div>
+      <div class="focus-layout"><div class="focus-primary">
+      <div class="segmented glass" id="modeTabs" role="tablist" aria-label="计时模式"><button data-mode="focus" role="tab" class="selected">番茄钟</button><button data-mode="up" role="tab">正计时</button><button data-mode="down" role="tab">倒计时</button></div>
+      <div class="timer-panel glass">
+        <div class="timer-topline"><button id="taskButton" class="task-pill"><span class="status-dot"></span><span id="taskLabel">自由专注</span><span data-icon="chevron" class="mini-icon"></span></button><button id="immerseButton" class="immerse-button" aria-label="进入沉浸专注">沉浸 ↗</button></div>
+        <div class="timer-orb" role="button" tabindex="0" aria-label="打开专注详情页" aria-haspopup="dialog" aria-expanded="false"><svg class="progress-ring" viewBox="0 0 280 280" aria-hidden="true"><defs><linearGradient id="ringGradient" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#528d71"/><stop offset="1" stop-color="#a6bb80"/></linearGradient></defs><circle cx="140" cy="140" r="124" class="ring-track"/><circle id="progressArc" cx="140" cy="140" r="124" class="ring-value"/></svg><div class="orb-content"><div class="timer-mode-label" id="timerModeLabel">FOCUS TIME</div><div class="time" id="timerText" aria-live="off">25:00</div><div class="timer-caption" id="timerCaption">一段专注，一点进步</div></div><i class="orb-shine"></i></div>
+        <div id="presets" class="presets"><button data-min="25" class="selected">25 分钟</button><button data-min="45">45 分钟</button><button data-min="60">60 分钟</button><button id="customButton" aria-label="自定义计时" data-icon="sliders"></button></div>
+        <div class="timer-controls"><button id="resetButton" class="round-button" aria-label="重置计时" data-icon="reset"></button><button id="startButton" class="primary"><span data-icon="play"></span><span id="startLabel">开始专注</span></button><button id="finishButton" class="round-button" aria-label="结束并保存" data-icon="stop"></button></div>
+        <div class="timer-footnote"><span data-icon="leaf"></span><span id="timerFootnote">不必着急，按照自己的节奏来</span></div>
+        <div class="focus-actions"><div id="cycleIndicator" class="cycle-indicator" aria-label="番茄轮次"></div><button id="extendButton" class="extend-button" disabled>＋5 分钟</button></div>
+      </div>
+      </div><div class="focus-secondary">
+      <div class="focus-tools" id="focusTools"><button class="glass" id="flowButton">循环流程 <span>↗</span></button><button class="glass" id="soundButton">环境声音 <span>♫</span></button><button class="glass" id="largeClockButton">大时钟 <span>↗</span></button></div>
+      <div id="flowBanner" class="glass flow-banner" hidden></div>
+      <button class="review-prompt" id="lastReviewButton" hidden>给刚才的专注留一句话 ↗</button>
+      <div class="section-title"><h2>今天的积累</h2><button id="viewStats">查看统计 <span>↗</span></button></div>
+      <div class="today-grid"><div class="glass mini-stat"><span class="stat-symbol" data-icon="clock"></span><span class="stat-title">专注时长</span><div><strong id="todayMinutes">0</strong><small> 分钟</small></div><div class="tiny-progress"><i id="goalProgress"></i></div></div><div class="glass mini-stat"><span class="stat-symbol warm" data-icon="tomato"></span><span class="stat-title">完成番茄</span><div><strong id="todayPomodoros">0</strong><small> 个</small></div><span class="stat-note" id="todayNote">每一次开始，都算数</span></div></div>
+      <div class="daily-goal"><span class="status-dot"></span><span id="goalText">今日目标 120 分钟</span><button id="goalButton">调整</button></div>
+      </div></div>
+    </section>
+    <section id="workspacePage" class="page">
+      <div class="eyebrow">A LITTLE PLAN, A LITTLE PROGRESS</div><h1>想做的事，<br>慢慢完成<span class="heading-dot">。</span></h1><p class="page-subtitle">从一个小计划开始，给时间一个方向</p>
+      <div id="workspaceOverview" class="workspace-overview"></div>
+      <div class="segmented glass workspace-tabs" id="workspaceTabs"><button data-workspace-view="tasks" class="selected">任务</button><button data-workspace-view="week">周计划</button><button data-workspace-view="calendar">学习日历</button></div>
+      <div class="workspace-toolbar"><div id="workspaceFilters"><button data-task-filter="open" class="selected">待完成</button><button data-task-filter="done">已完成</button><button data-task-filter="all">全部</button></div><button id="addWorkspaceItem" class="small-primary">＋ 添加任务</button></div>
+      <div id="workspaceContent"></div>
+    </section>
+    <section id="eventsPage" class="page">
+      <div class="eyebrow">DAYS TO REMEMBER</div><div class="heading-row"><div><h1>心有所期<span class="heading-dot">。</span></h1><p class="page-subtitle">让每一个期待，都有清晰的刻度</p></div></div>
+      <button class="primary add-event" id="addEvent"><span data-icon="plus"></span>添加倒计日</button>
+      <div id="eventList"></div>
+      <p class="soft-note">按本地日期计算 · 到来的那一天是第 0 天</p>
+    </section>
+    <section id="statsPage" class="page">
+      <div class="eyebrow">SMALL STEPS, REAL GROWTH</div><h1>时间会记得<span class="heading-dot">。</span></h1><p class="page-subtitle">看见每一份认真，慢慢成为更好的自己</p>
+      <div id="referenceStatsTop"></div>
+      <div class="segmented glass stats-tabs" id="rangeTabs"><button data-range="7" class="selected">近 7 天</button><button data-range="30">近 30 天</button><button data-range="all">全部</button></div>
+      <div id="richStats"></div><button id="exportStatsButton" class="text-button export-stats-button">导出统计图片 ↗</button>
+      <div class="stats-grid">
+      <div class="glass summary-card"><span class="stat-title">所选范围合计</span><div class="summary-total"><strong id="totalHours">0</strong><span>小时</span><strong id="totalMins">0</strong><span>分钟</span></div><p id="preciseTotal" class="precise-total"></p><div class="summary-bottom"><div><b id="totalSessions">0</b><span>专注次数</span></div><div><b id="totalPomos">0</b><span>完成番茄</span></div><div><b id="streakDays">0</b><span>连续天数</span></div></div></div>
+      <div class="glass chart-card"><div class="section-title"><h2>专注趋势</h2><span id="chartUnit">分钟 / 天</span></div><div class="trend-view-tabs" id="trendViewTabs" role="tablist" aria-label="趋势图类型"><button data-trend-view="bar" role="tab" class="selected" aria-selected="true">柱状图</button><button data-trend-view="line" role="tab" aria-selected="false" tabindex="-1">折线图</button></div><p id="trendSpan" class="trend-span"></p><div id="barChart" class="bar-chart" role="group" aria-label="每日专注时长柱状图"></div><div id="lineChart" class="line-chart" hidden></div><div class="chart-caption" id="chartCaption"></div></div>
+      <div class="glass donut-card"><div class="section-title"><h2>事项占比</h2><span>环形图</span></div><div id="taskDonut" class="task-donut"></div><div id="donutLegend"></div><p id="taskChartCaption" class="chart-caption"></p></div>
+      <div class="glass hour-card"><div class="section-title"><h2>专注时段</h2><span id="hourUnit">分钟</span></div><p class="chart-explainer">按专注结束时段归档，看看时间的分布</p><div id="hourChart" class="hour-chart" role="group" aria-label="专注结束时段分布图"></div><p id="hourChartCaption" class="chart-caption"></p></div>
+      <div class="glass heatmap-card"><div class="section-title"><h2>专注足迹</h2><span>近 28 天</span></div><div id="heatmap" class="heatmap"></div><div class="heatmap-key"><span>少</span><i></i><i></i><i></i><i></i><span>多</span></div></div>
+      <div class="glass label-card"><div class="section-title"><h2>时间花在哪里</h2><span>按专注事项</span></div><div id="labelBreakdown"></div></div>
+      </div>
+      <div id="referenceCalendars" class="reference-calendars"></div>
+      <div class="section-title"><h2>最近记录</h2><span id="recordCount"></span></div><div id="sessionList"></div><button id="moreRecords" class="text-button" hidden>查看更多记录</button>
+    </section>
+  </main>
+  <nav class="bottom-nav glass" aria-label="主要导航"><i class="nav-capsule" aria-hidden="true"></i><button data-page="focus" class="selected"><span data-icon="timer"></span><span>专注</span></button><button data-page="workspace"><span data-icon="check"></span><span>计划</span></button><button data-page="events"><span data-icon="calendar"></span><span>倒计日</span></button><button data-page="stats"><span data-icon="chart"></span><span>统计</span></button></nav>
+</div>
+<section id="focusScene" class="focus-scene" hidden role="dialog" aria-modal="true" aria-labelledby="sceneTitle">
+ <div class="scene-wallpaper" aria-hidden="true"></div><div class="scene-shade" aria-hidden="true"></div>
+ <div class="scene-toolbar"><button id="sceneExit" class="scene-glass" aria-label="返回主界面"><span id="sceneBackIcon"></span><span>返回</span></button><h2 id="sceneTitle">专注详情</h2><div class="scene-toolbar-tools"><button id="sceneAppearance" class="scene-glass" aria-label="设置背景照片与玻璃"></button><button id="sceneClock" class="scene-glass" aria-label="打开黑色翻页计时钟"></button><button id="sceneFullscreen" class="scene-glass" aria-label="显示系统栏" aria-pressed="true"></button></div></div>
+ <button id="sceneQuote" class="scene-quote" aria-label="换一句专注寄语"><span aria-hidden="true">“</span><span id="sceneQuoteText">此刻，只做好这一件事。</span></button>
+ <div class="scene-main"><div class="scene-clock-area"><div class="scene-dial"><svg class="scene-progress" viewBox="0 0 280 280" aria-hidden="true"><circle class="scene-ring-track" cx="140" cy="140" r="126"/><circle id="sceneArc" cx="140" cy="140" r="126"/></svg><div class="scene-digits-wrap"><div id="sceneMode">番茄专注</div><div id="sceneTime" class="scene-accessible-time" role="timer" aria-live="off">25:00</div><div id="sceneDigits" aria-hidden="true"></div></div></div></div><div class="scene-caption"><button id="sceneTask" class="scene-task scene-glass" aria-label="选择专注事项">自由专注</button><p id="sceneStatus">准备好了，就开始吧</p></div></div>
+ <div class="scene-footer"><div class="scene-dock scene-glass" role="group" aria-label="专注控制"><button id="sceneSound" aria-label="环境声音"></button><button id="sceneToggle" class="scene-toggle" aria-label="开始专注"></button><button id="sceneReset" aria-label="重新开始计时"></button><button id="sceneFinish" aria-label="结束并保存专注"></button></div><button id="sceneQuiet" class="scene-quiet-toggle" aria-label="收起控制"></button><button id="sceneReveal" class="scene-glass" hidden>显示控制</button></div>
+</section>
+<div id="sheetOverlay" class="sheet-overlay" hidden><section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="sheet-handle"></div><div class="sheet-heading"><h2 id="sheetTitle"></h2><button id="closeSheet" class="icon-button" aria-label="关闭" data-icon="close"></button></div><div id="sheetBody"></div></section></div>
+<div id="largeClock" class="large-clock" hidden role="dialog" aria-label="横屏大时钟"><div class="clock-toolbar"><button id="clockExit">↙ 返回</button><div><button data-clock-face="timer">计时</button><button data-clock-face="clock">时钟</button></div><button id="clockStyleButton">切换样式</button></div><div class="clock-center"><div id="clockDate"></div><div id="clockTime" role="timer" aria-live="off">00:00</div><div id="clockDigits" aria-hidden="true"></div><div id="clockTask"></div></div><div class="clock-controls"><button id="clockToggle" class="glass">开始专注</button><span>给重要的事，完整的一刻</span></div></div>
+<div id="toast" class="toast" role="status"></div>
+<script src="charts-data.js"></script><script src="features-data.js"></script><script src="app.js"></script><script src="appearance.js"></script><script src="enhancements.js"></script><script src="glass-motion.js"></script><script src="charts.js"></script><script src="workspace.js"></script><script src="flip-clock.js"></script><script src="focus-features.js"></script><script src="insight-features.js"></script><script src="event-date-picker.js"></script><script src="reference-stats.js"></script><script src="focus-scene.js"></script><script src="todo-home.js"></script><script src="nav-gesture.js"></script></body></html>

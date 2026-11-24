@@ -1,0 +1,74 @@
+/* Pearl-white surfaces retain the user's wallpaper underneath. */
+body:not(.theme-dark){--ink:#2d414d;--sub:#718390;--line:rgba(81,109,132,.10);--green:#577c92;--glass-tint:255,255,255;background:#f8fafc;color:var(--ink)}
+body:not(.theme-dark) .ambient{background:radial-gradient(ellipse at 10% 3%,#eaf1fa88,transparent 50%),radial-gradient(ellipse at 100% 75%,#ecf2f399,transparent 60%),#fafcfe}
+body:not(.theme-dark) .ambient i{opacity:.2}
+body:not(.theme-dark)[data-wallpaper="mist"] .wallpaper-layer{opacity:.65}
+body:not(.theme-dark) .brand-icon{background:linear-gradient(145deg,#ffffffd9,#eaf2f877);border-color:#ffffff;color:#7795a8;box-shadow:0 4px 14px #6785a712,inset 0 1px 1px #fff}
+body:not(.theme-dark) .brand-dot{color:#b5c1cc}
+body:not(.theme-dark) .eyebrow,body:not(.theme-dark) .page-subtitle{color:#7c8f9e}
+body:not(.theme-dark) .heading-dot{color:#9bb8c9}
+body:not(.theme-dark) .little-orbit{border-color:#bacddc66}
+body:not(.theme-dark) .little-orbit span{color:#a1b8ca}
+body:not(.theme-dark) .little-orbit:after{background:#b2c9d8;box-shadow:0 0 12px #b2c9d844}
+body:not(.theme-dark).liquid .glass{background:linear-gradient(135deg,#ffffff7a,#ffffff18 55%,#edf5fa33),rgba(255,255,255,var(--glass-alpha));border:1px solid #ffffffeb;box-shadow:0 9px 27px #4767850c,inset 0 1px 1px #fff,inset 0 -1px 0 #ffffff99}
+body:not(.theme-dark).liquid .glass:before{background:radial-gradient(ellipse at 12% 0%,#ffffffd9,transparent 54%),radial-gradient(circle at var(--touch-x,70%) var(--touch-y,10%),#cfebff80,transparent 48%);opacity:.22}
+body:not(.theme-dark).liquid .glass.touched:before{opacity:.8}
+body:not(.theme-dark) .primary{background:linear-gradient(135deg,#ffffffed,#eff6fbe8 70%,#eaf2f8eb);border:1px solid #fff;color:#3e6279;box-shadow:0 6px 17px #6b8ba123,inset 0 1px 1px #fff,inset 0 -1px 1px #c2d5e94d}
+body:not(.theme-dark) .primary svg{color:#6b8fa7}
+body:not(.theme-dark) .segmented button{color:#7b8d9b}
+body:not(.theme-dark) .segmented button.selected{background:linear-gradient(135deg,#fff,#f5f9fdd9);border-color:#fff;color:#446c86;box-shadow:0 2px 7px #6484a215,inset 0 1px 0 #fff}
+body:not(.theme-dark).liquid .timer-orb{background:radial-gradient(ellipse at 22% 12%,#fffffff2,transparent 60%),radial-gradient(ellipse at 90% 100%,#deedf866,transparent 65%),linear-gradient(145deg,#ffffff70,#f4f9fc99 60%,#ffffff80);border-color:#ffffffed;box-shadow:inset 2px 3px 5px #fff,inset -2px -2px 5px #d3e4ee4d,0 12px 35px #6d8b9f0d}
+body:not(.theme-dark).liquid .timer-orb:before{border-color:#ffffffcc;box-shadow:inset 1px 2px 5px #ffffffbb,inset -1px -1px 4px #b7cedb22}
+body:not(.theme-dark) .ring-track{stroke:#bdd0df3d}
+body:not(.theme-dark) .ring-value{stroke:#8caec3}
+body:not(.theme-dark) .timer-mode-label{color:#8aa3b2}
+body:not(.theme-dark) .timer-caption,body:not(.theme-dark) .timer-footnote{color:#8499a6}
+body:not(.theme-dark) .time{color:#304c5c}
+body:not(.theme-dark) .task-pill,body:not(.theme-dark) .round-button{color:#728c9d;background:#ffffff6b;border-color:#ffffffcc}
+body:not(.theme-dark) .status-dot{background:#a7c3d1}
+body:not(.theme-dark) .presets button{color:#8396a4;background:#ffffff35}
+body:not(.theme-dark) .presets button.selected{background:#e9f3fb99;color:#5a7d93;border-color:#c7dcec66}
+body:not(.theme-dark) .bottom-nav{border-color:#ffffffef;box-shadow:0 8px 30px #42617c13,inset 0 1px 1px white}
+body:not(.theme-dark) .bottom-nav button{color:#94a3af}
+body:not(.theme-dark) .bottom-nav button.selected{color:#4f778f}
+body:not(.theme-dark) .bottom-nav .nav-capsule{background:linear-gradient(135deg,#ffffffeb,#e4f1f99c);border-color:#fff;box-shadow:inset 0 1px 1px #fff,inset 0 -1px 1px #aecadb33,0 3px 10px #6d91af10}
+body:not(.theme-dark) .stat-title,body:not(.theme-dark) .stat-note,body:not(.theme-dark) .mini-stat small,body:not(.theme-dark) .daily-goal,body:not(.theme-dark) .daily-goal button,body:not(.theme-dark) .section-title button,body:not(.theme-dark) .section-title>span{color:#8498a5}
+body:not(.theme-dark) .stat-symbol,body:not(.theme-dark) .stat-symbol.warm{color:#97b2c5}
+body:not(.theme-dark) .tiny-progress{background:#e5eef5}
+body:not(.theme-dark) .tiny-progress i,body:not(.theme-dark) .label-track i{background:linear-gradient(90deg,#8aadc4,#b5cedd)}
+body:not(.theme-dark) .sheet{background:linear-gradient(140deg,#fcfdfff5,#f3f7fbfa);border-color:#fff;box-shadow:0 -15px 70px #45607819}
+body:not(.theme-dark) .sheet-overlay{background:#506d872e}
+body:not(.theme-dark) .sheet-description,body:not(.theme-dark) .form-label,body:not(.theme-dark) .settings-row small,body:not(.theme-dark) .picker-note,body:not(.theme-dark) .sheet-footer,body:not(.theme-dark) .text-button{color:#7b91a1}
+body:not(.theme-dark) .field{background:#ffffffcb;border-color:#dbe6ee;color:#3f5e73}
+body:not(.theme-dark) .sheet-handle{background:#ccdbe6}
+body:not(.theme-dark) .switch{background:#d9e5ed}
+body:not(.theme-dark) .switch:checked{background:#94b5c9}
+body:not(.theme-dark) .appearance-range{accent-color:#85a8bf}
+body:not(.theme-dark) .range-label output,body:not(.theme-dark) .wallpaper-presets small{color:#7e97a8}
+body:not(.theme-dark) .tone-options button.selected,body:not(.theme-dark) .material-options button.selected{background:#e6f1fbe0;border-color:#a9c4d6}
+body:not(.theme-dark) .wallpaper-presets button.selected{border-color:#a4bfd3;background:#fff7}
+body:not(.theme-dark) .empty-art,body:not(.theme-dark) .session-icon{background:linear-gradient(135deg,#ffffffcc,#eaf2f999);color:#8baabe}
+body:not(.theme-dark) .event-card.peach{background:linear-gradient(135deg,#ffffffdf,#fff8f0aa)}
+body:not(.theme-dark) .event-card.blue{background:linear-gradient(135deg,#ffffffdf,#edf6fcbb)}
+body:not(.theme-dark) .event-kind,body:not(.theme-dark) .event-date,body:not(.theme-dark) .event-number small,body:not(.theme-dark) .event-card button,body:not(.theme-dark) .session-detail small,body:not(.theme-dark) .session-length{color:#8199a9}
+body:not(.theme-dark) .immerse-button,body:not(.theme-dark) .extend-button,body:not(.theme-dark) .cycle-indicator{color:#7c98aa}
+body:not(.theme-dark) .extend-button{background:#ffffff55;border-color:#c2d7e7aa}
+body:not(.theme-dark) .cycle-dots i{background:#b9cfdd55}
+body:not(.theme-dark) .cycle-dots .done{background:#86a9c0}
+body:not(.theme-dark) .cycle-dots .current{background:#b4ccdc}
+body:not(.theme-dark) .precise-total,body:not(.theme-dark) .label-top small,body:not(.theme-dark) .label-meta,body:not(.theme-dark) .insight-empty,body:not(.theme-dark) .detail-summary span,body:not(.theme-dark) .detail-record small{color:#7e96a7}
+body:not(.theme-dark) .bar-fill{background:linear-gradient(#a4c0d5,#d1e1eb)}
+body:not(.theme-dark) .bar-column:last-child .bar-fill{background:linear-gradient(#7d9fb7,#bad2e0)}
+body:not(.theme-dark) .toast{background:#edf5fbf5;color:#3c6076;border:1px solid #fff;box-shadow:0 6px 24px #4b6d8926}
+body:not(.theme-dark) .danger{color:#b17f83}
+body:not(.theme-dark)[data-material="eco"] .glass,body:not(.theme-dark):not(.liquid) .glass{background:#ffffffeb;backdrop-filter:none;-webkit-backdrop-filter:none}
+
+/* Short-lived overlays keep the flow intact even when a click replaces its button. */
+.glass-flow-layer{position:fixed;inset:0;z-index:45;pointer-events:none;overflow:hidden;contain:layout style}
+.glass-flow{position:absolute;overflow:hidden;pointer-events:none;isolation:isolate;box-shadow:inset 0 1px 1px #ffffffb3,inset 0 -1px 1px #9dbbdc33;will-change:opacity}
+.glass-flow-wave{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse at 32% 28%,#ffffff88 0%,#d3ebff44 42%,#8db5d933 59%,#ffffffbd 68%,#a1c3df40 71%,transparent 74%);box-shadow:inset 2px 3px 9px #ffffffb0,inset -3px -4px 9px #729dbc20;will-change:transform,opacity}
+.glass-flow-sheen{position:absolute;inset:-65% -35%;pointer-events:none;border-radius:50%;background:linear-gradient(115deg,transparent 34%,#ffffff33 41%,#ffffffed 48%,#d1eaff88 52%,transparent 61%);will-change:transform,opacity}
+.glass-flow-spark{position:absolute;inset:1px;border:1px solid #e2f2ffbb;border-radius:inherit;box-shadow:inset 0 0 8px #ffffff77;will-change:opacity}
+.theme-dark .glass-flow-wave{background:radial-gradient(ellipse at 32% 28%,#ffffff66 0%,#c4e7ff44 42%,#9cd3e133 59%,#ffffff99 68%,transparent 74%)}
+body[data-material="eco"] .glass-flow-wave{box-shadow:none}
+@media(prefers-reduced-motion:reduce){.glass-flow-layer{display:none}}

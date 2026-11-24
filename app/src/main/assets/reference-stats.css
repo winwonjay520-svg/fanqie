@@ -1,0 +1,38 @@
+.stats-appearance-tools{display:flex;gap:10px;margin:0 0 18px;flex-wrap:wrap}
+.stats-appearance-tools button{display:flex;align-items:center;gap:8px;min-height:44px;padding:10px 15px;border-radius:15px;font-size:12px}
+.stats-appearance-tools svg{width:17px;height:17px}
+.reference-total,.reference-day,.reference-calendar{border-radius:25px;padding:20px;margin:16px 0}
+.reference-total .section-title{margin:0 0 22px}.reference-total .section-title>span{font-size:10px}
+.reference-metrics{display:grid;grid-template-columns:1fr 1.7fr 1.3fr;gap:10px}
+.reference-metrics.two{grid-template-columns:1fr 1.7fr;margin-top:22px}
+.reference-metrics>div{min-width:0}.reference-metrics small{display:block;color:var(--sub);font-size:10px;margin-bottom:10px}
+.reference-metrics strong{display:block;font-size:clamp(16px,4.4vw,26px);font-weight:450;overflow-wrap:anywhere;line-height:1.6;font-variant-numeric:tabular-nums}
+.reference-metrics>div:first-child strong{font-size:30px;line-height:1.4}
+.reference-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.reference-heading h2{font-size:15px}.period-controls{display:flex;align-items:center;gap:3px;max-width:100%}
+.period-controls button{min-width:36px;min-height:40px;border-radius:12px;font-size:22px;padding:4px}
+.period-controls input{min-width:0;max-width:140px;min-height:40px;border:1px solid var(--line);border-radius:11px;background:transparent;color:inherit;font:inherit;font-size:12px;padding:6px}
+.period-controls input[type=number]{width:78px}.period-controls #referenceTodayButton{font-size:11px;min-width:38px}
+.reference-records{display:block;min-height:44px;font-size:11px;margin:14px 0 -4px auto;color:var(--sub)}
+.reference-calendar-total{font-size:18px;font-weight:450;line-height:1.6;margin:20px 0 14px}
+.calendar-chart{color:#6e92b7;min-width:0}.calendar-chart svg{width:100%;height:auto;display:block;overflow:visible}
+.calendar-grid-line{stroke:currentColor;stroke-opacity:.14;stroke-dasharray:3 4;stroke-width:1}
+.calendar-axis{font-family:inherit;font-size:10px;fill:var(--sub);stroke:none}
+.calendar-stroke{fill:none;stroke:currentColor;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.calendar-point{fill:#fff;stroke:currentColor;stroke-width:2;cursor:pointer}
+.calendar-point:focus-visible{outline:none;stroke-width:5}
+.reference-calendar-caption{font-size:11px;line-height:1.8;color:var(--sub);margin-top:16px}
+.theme-dark .calendar-chart{color:#b4d9f1}.theme-dark .calendar-point{fill:#203442}
+.theme-dark .period-controls input{color-scheme:dark}
+.photo-look-tools .primary{margin-top:12px;font-size:13px}
+@media(min-width:700px){
+ .stats-appearance-tools button{min-height:48px;font-size:14px}
+ .reference-total,.reference-day,.reference-calendar{padding:26px}
+ .reference-metrics small{font-size:13px}.reference-metrics strong{font-size:28px}.reference-metrics>div:first-child strong{font-size:36px}
+ .reference-heading h2{font-size:18px}.period-controls{gap:6px}
+ .period-controls input{font-size:14px;max-width:160px;min-height:44px}
+ .period-controls button{min-height:44px;min-width:44px}
+ .reference-calendars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:24px 0}
+ .reference-calendar{margin:0;min-width:0}
+ .reference-calendar-caption,.reference-records{font-size:13px}
+}

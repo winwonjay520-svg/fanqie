@@ -1,0 +1,32 @@
+/* An opaque white preset; photos and the other palettes remain user-selectable. */
+body[data-wallpaper=white]:not(.theme-dark){--ink:#292929;--sub:#777;--green:#555;--line:#ededed;background:#fff;color:#292929;accent-color:#666}
+body[data-wallpaper=white]:not(.theme-dark) .ambient{background:#fff}
+body[data-wallpaper=white]:not(.theme-dark) .ambient i,
+body[data-wallpaper=white]:not(.theme-dark) .wallpaper-layer{display:none}
+body[data-wallpaper=white]:not(.theme-dark) :is(.glass,.primary,.timer-orb,.sheet,.brand-icon,.empty-art,.session-icon,.widget-preview){background:#fff;border:1px solid #ebebeb;color:#333;box-shadow:0 5px 20px #00000004;backdrop-filter:none;-webkit-backdrop-filter:none}
+body[data-wallpaper=white]:not(.theme-dark) .timer-orb{border-color:#eee;box-shadow:inset 0 0 0 12px #fff,0 7px 25px #00000004}
+body[data-wallpaper=white]:not(.theme-dark) .timer-orb:before{border-color:#f1f1f1;box-shadow:none}
+body[data-wallpaper=white]:not(.theme-dark) .glass:before{background:radial-gradient(circle at var(--touch-x,70%) var(--touch-y,10%),#d7d7d74a,transparent 50%)}
+body[data-wallpaper=white]:not(.theme-dark) :is(.primary,.round-button,.task-pill,.field,.extend-button){background:#fff;border:1px solid #e5e5e5;color:#404040;box-shadow:0 3px 10px #00000004}
+body[data-wallpaper=white]:not(.theme-dark) :is(.primary svg,.time,.segmented button.selected,.bottom-nav button.selected){color:#303030}
+body[data-wallpaper=white]:not(.theme-dark) :is(.segmented button.selected,.presets button.selected,.tone-options button.selected,.material-options button.selected,.workspace-toolbar button.selected,.mood-options button.selected){background:#f5f5f5;color:#333;border-color:#dedede;box-shadow:none}
+body[data-wallpaper=white]:not(.theme-dark) .bottom-nav{background:#fff;border-color:#eee;box-shadow:0 4px 24px #00000008}
+body[data-wallpaper=white]:not(.theme-dark) .bottom-nav .nav-capsule{background:#f5f5f5;border-color:#eee;box-shadow:none}
+body[data-wallpaper=white]:not(.theme-dark) :is(.eyebrow,.page-subtitle,.brand-dot,.heading-dot,.little-orbit span,.stat-symbol,.timer-mode-label,.timer-caption,.timer-footnote,.stat-title,.stat-note,.mini-stat small,.daily-goal,.daily-goal button,.section-title button,.section-title>span,.sheet-description,.form-label,.settings-row small,.picker-note,.sheet-footer,.text-button,.range-label output,.wallpaper-presets small,.event-kind,.event-date,.event-number small,.event-card button,.session-detail small,.session-length,.immerse-button,.extend-button,.cycle-indicator,.focus-tools button,.focus-tools span,.workspace-overview small,.workspace-overview i,.workspace-toolbar button,.task-footer span,.task-footer button,.task-edit,.day-plan-total,.calendar-note,.workspace-empty p,.summary-bottom span,.summary-total span,.soft-note,.empty-state p,.bottom-nav button,.segmented button,.presets button){color:#777}
+body[data-wallpaper=white]:not(.theme-dark) :is(.ring-track){stroke:#ededed}
+body[data-wallpaper=white]:not(.theme-dark) .ring-value{stroke:#a4a4a4}
+body[data-wallpaper=white]:not(.theme-dark) :is(.little-orbit,.little-orbit:before){border-color:#e0e0e0}
+body[data-wallpaper=white]:not(.theme-dark) :is(.little-orbit:after,.status-dot,.switch:checked){background:#999;box-shadow:none}
+body[data-wallpaper=white]:not(.theme-dark) :is(.tiny-progress,.workspace-track,.switch,.sheet-handle){background:#eee}
+body[data-wallpaper=white]:not(.theme-dark) :is(.tiny-progress i,.workspace-track i,.label-track i){background:#aaa}
+body[data-wallpaper=white]:not(.theme-dark) .cycle-dots i{background:#e6e6e6}
+body[data-wallpaper=white]:not(.theme-dark) .cycle-dots .current{background:#b5b5b5}
+body[data-wallpaper=white]:not(.theme-dark) .cycle-dots .done{background:#888}
+body[data-wallpaper=white]:not(.theme-dark) :is(input[type=range],input[type=checkbox]){accent-color:#888}
+body[data-wallpaper=white]:not(.theme-dark) .sheet-overlay{background:#0003}
+body[data-wallpaper=white]:not(.theme-dark) .wallpaper-presets button.selected{border-color:#999;background:#fff}
+body[data-wallpaper=white]:not(.theme-dark) :is(.task-badges span,.flow-preview span,.soundscape-heading>span,.mood-options button,.week-report-grid>div,.backup-preview>div){background:#f7f7f7;color:#666;border-color:#e6e6e6}
+body[data-wallpaper=white]:not(.theme-dark) .toast{background:#fff;color:#444;border:1px solid #e8e8e8;box-shadow:0 5px 22px #00000010}
+body[data-wallpaper=white]:not(.theme-dark) .glass-flow-wave{background:radial-gradient(ellipse at 32% 28%,#ffffff88 0%,#eeeeee66 42%,#bdbdbd33 59%,#ffffffbd 68%,#cfcfcf40 71%,transparent 74%);box-shadow:inset 2px 3px 9px #ffffffb0,inset -3px -4px 9px #77777715}
+body[data-wallpaper=white]:not(.theme-dark) .glass-flow-sheen{background:linear-gradient(115deg,transparent 34%,#ffffff33 41%,#ffffffed 48%,#eeeeee88 52%,transparent 61%)}
+body[data-wallpaper=white]:not(.theme-dark) .glass-flow-spark{border-color:#eee;box-shadow:inset 0 0 8px #ffffff77}

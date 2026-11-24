@@ -1,0 +1,16 @@
+/* Native date input remains the canonical value; visible parts jump straight to any date. */
+.event-canonical-date{display:none!important}
+.event-date-templates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0 4px}
+.event-date-templates button{min-width:0;min-height:70px;padding:13px 12px;border:1px solid var(--line);border-radius:16px;text-align:left;background:rgba(var(--glass-tint),.12);color:var(--ink)}
+.event-date-templates b{display:block;font-size:12px;font-weight:550;line-height:1.5}.event-date-templates small{display:block;font-size:10px;line-height:1.6;color:var(--sub);margin-top:5px}
+.event-date-templates button[aria-pressed=true]{border-color:currentColor;background:rgba(var(--glass-tint),.3)}
+.event-date-parts{display:grid;grid-template-columns:minmax(88px,1.2fr) repeat(2,minmax(0,1fr));gap:9px}
+.event-date-parts label{display:block;min-width:0}.event-date-parts label>span{display:block;font-size:11px;color:var(--sub);margin:0 0 7px}.event-date-parts .field{min-width:0;padding:11px 10px;font-size:14px}
+.event-date-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px}
+.event-date-shortcuts button{min-width:0;min-height:40px;font-size:11px;padding:8px 3px;border:1px solid var(--line);border-radius:12px;color:var(--ink);background:rgba(var(--glass-tint),.12)}
+.event-date-error{font-size:11px;line-height:1.7;color:#b05d52;margin-top:9px}.event-date-error[hidden]{display:none}
+.event-repeat-preview{font-size:11px;line-height:1.8;color:var(--sub);border:1px solid var(--line);border-radius:13px;padding:12px;margin:12px 0 0;overflow-wrap:anywhere}
+.event-repeat-settings .form-label{margin-top:19px}
+body.theme-dark .event-date-error{color:#f2b5a6}
+@media(min-width:700px){.event-date-templates button{min-height:80px;padding:16px}.event-date-templates b{font-size:14px}.event-date-templates small,.event-date-parts label>span,.event-repeat-preview,.event-date-error{font-size:12px}.event-date-parts .field{font-size:16px}.event-date-shortcuts button{font-size:13px;min-height:44px}}
+@media(max-width:360px){.event-date-templates{gap:8px}.event-date-templates button{padding:11px 9px}.event-date-templates b{font-size:11px}.event-date-templates small{font-size:9px}.event-date-parts{gap:7px;grid-template-columns:minmax(82px,1.2fr) repeat(2,minmax(0,1fr))}.event-date-parts .field{padding:10px 7px;font-size:13px}}

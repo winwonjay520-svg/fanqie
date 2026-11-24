@@ -1,0 +1,48 @@
+/* Opaque neutral surfaces avoid wallpaper sampling and blur work in solid modes. */
+.solid-mode-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 8px}
+.solid-mode-options button{display:flex;align-items:center;gap:12px;min-width:0;min-height:76px;padding:12px;border:1px solid var(--line);border-radius:17px;text-align:left;color:var(--ink)}
+.solid-mode-options b{font-size:13px;font-weight:550;display:block}.solid-mode-options small{font-size:10px;color:var(--sub);display:block;margin-top:7px}
+.solid-mode-options .mode-sample{display:block;flex-shrink:0;width:36px;height:44px;border:1px solid #8885;border-radius:10px;box-shadow:inset 0 -13px 0 #8882}
+.mode-white{background:#fff}.mode-black{background:#000}
+.solid-mode-options button.selected{outline:2px solid currentColor;outline-offset:-2px}
+body[data-wallpaper=white]:not(.theme-dark){--glass-tint:255,255,255;color-scheme:light}
+body[data-wallpaper=white]:not(.theme-dark) :is(.wallpaper-preview,.preview-orb){background:#fff;border-color:#e6e6e6;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+body[data-wallpaper=white]:not(.theme-dark) :is(.preview-background,.preview-shade){display:none}
+body.theme-dark[data-wallpaper=black]{--ink:#e8e8e8;--sub:#aaa;--green:#ccc;--line:#303030;--glass-tint:20,20,20;--glass-edge:#333;color-scheme:dark;background:#000;color:var(--ink);accent-color:#bbb}
+body.theme-dark[data-wallpaper=black] :is(.ambient,.wallpaper-layer){display:none}
+body.theme-dark[data-wallpaper=black] :is(.glass,.primary,.timer-orb,.sheet,.brand-icon,.empty-art,.session-icon,.widget-preview){background:#111;border:1px solid #2c2c2c;color:#e8e8e8;box-shadow:inset 0 1px 0 #ffffff08;backdrop-filter:none;-webkit-backdrop-filter:none}
+body.theme-dark[data-wallpaper=black] :is(.brand,h1,.time){text-shadow:none}
+body.theme-dark[data-wallpaper=black] .timer-orb{background:#080808;border-color:#292929;box-shadow:inset 0 0 0 12px #080808}
+body.theme-dark[data-wallpaper=black] .timer-orb:before{border-color:#222;box-shadow:none}
+body.theme-dark[data-wallpaper=black] .glass:before{background:radial-gradient(circle at var(--touch-x,70%) var(--touch-y,10%),#ffffff20,transparent 50%)}
+body.theme-dark[data-wallpaper=black] :is(.primary,.round-button,.task-pill,.field,.extend-button,.workspace-toolbar .small-primary){background:#1b1b1b;border:1px solid #3a3a3a;color:#e8e8e8;box-shadow:none}
+body.theme-dark[data-wallpaper=black] .field option{background:#1b1b1b}
+body.theme-dark[data-wallpaper=black] :is(.primary svg,.time,.segmented button.selected,.bottom-nav button.selected){color:#e8e8e8}
+body.theme-dark[data-wallpaper=black] :is(.segmented button.selected,.presets button.selected,.tone-options button.selected,.material-options button.selected,.workspace-toolbar button.selected,.mood-options button.selected){background:#292929;color:#f0f0f0;border-color:#555;box-shadow:none}
+body.theme-dark[data-wallpaper=black] .bottom-nav{background:#111;border-color:#303030;box-shadow:none}
+body.theme-dark[data-wallpaper=black] .bottom-nav .nav-capsule{background:#292929;border-color:#444;box-shadow:none}
+body.theme-dark[data-wallpaper=black] :is(.eyebrow,.page-subtitle,.brand-dot,.heading-dot,.little-orbit span,.stat-symbol,.timer-mode-label,.timer-caption,.timer-footnote,.stat-title,.stat-note,.mini-stat small,.daily-goal,.daily-goal button,.section-title button,.section-title>span,.sheet-description,.form-label,.settings-row small,.picker-note,.sheet-footer,.text-button,.range-label output,.wallpaper-presets small,.event-kind,.event-date,.event-number small,.event-card button,.session-detail small,.session-length,.immerse-button,.extend-button,.cycle-indicator,.focus-tools button,.focus-tools span,.workspace-overview small,.workspace-overview i,.workspace-toolbar button,.task-footer span,.task-footer button,.task-edit,.day-plan-total,.calendar-note,.workspace-empty p,.summary-bottom span,.summary-total span,.soft-note,.empty-state p,.bottom-nav button,.segmented button,.presets button,.flow-banner small,.flow-banner span,.flow-banner button,.review-prompt,.plan-space,.calendar-weekdays span,.calendar-grid small,.plan-row small,.task-picker small,.label-meta,.precise-total,.label-top small,.detail-summary span,.detail-record small,.soundscape-heading small,.sound-volume,.week-heading){color:#aaa}
+body.theme-dark[data-wallpaper=black] .ring-track{stroke:#2a2a2a}body.theme-dark[data-wallpaper=black] .ring-value{stroke:#c2c2c2}
+body.theme-dark[data-wallpaper=black] :is(.little-orbit,.little-orbit:before){border-color:#444}
+body.theme-dark[data-wallpaper=black] :is(.little-orbit:after,.status-dot,.switch:checked){background:#bbb;box-shadow:none}
+body.theme-dark[data-wallpaper=black] :is(.tiny-progress,.workspace-track,.switch,.sheet-handle){background:#333}
+body.theme-dark[data-wallpaper=black] :is(.tiny-progress i,.workspace-track i,.label-track i){background:#aaa}
+body.theme-dark[data-wallpaper=black] .cycle-dots i{background:#333}body.theme-dark[data-wallpaper=black] .cycle-dots .current{background:#888}body.theme-dark[data-wallpaper=black] .cycle-dots .done{background:#bbb}
+body.theme-dark[data-wallpaper=black] :is(input[type=range],input[type=checkbox]){accent-color:#bbb}
+body.theme-dark[data-wallpaper=black] .sheet-overlay{background:#0009}
+body.theme-dark[data-wallpaper=black] .wallpaper-presets button.selected{border-color:#999;background:#222}
+body.theme-dark[data-wallpaper=black] :is(.task-badges span,.flow-preview span,.soundscape-heading>span,.mood-options button,.week-report-grid>div,.backup-preview>div){background:#222;color:#ccc;border-color:#444}
+body.theme-dark[data-wallpaper=black] .calendar-grid button{background:rgba(190,190,190,var(--study-opacity,0))}
+body.theme-dark[data-wallpaper=black] .calendar-grid .calendar-today{border-color:#999}
+body.theme-dark[data-wallpaper=black] .calendar-chart{color:#ccc}body.theme-dark[data-wallpaper=black] .calendar-point{fill:#111}
+body.theme-dark[data-wallpaper=black] .toast{background:#222;color:#e8e8e8;border:1px solid #444;box-shadow:none}
+body.theme-dark[data-wallpaper=black] .danger{color:#efa8a8}
+body.theme-dark[data-wallpaper=black] .wallpaper-preview{background:#000;border-color:#333}
+body.theme-dark[data-wallpaper=black] :is(.preview-background,.preview-shade){display:none}
+body.theme-dark[data-wallpaper=black] .preview-orb{background:#111;border-color:#444;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+body.theme-dark[data-wallpaper=black] .glass-flow-wave{background:radial-gradient(ellipse at 32% 28%,#ffffff33,#aaaaaa22 42%,#ffffff55 68%,transparent 74%);box-shadow:inset 2px 3px 9px #ffffff44}
+body.theme-dark[data-wallpaper=black] .glass-flow-sheen{background:linear-gradient(115deg,transparent 34%,#ffffff10 41%,#ffffff44 48%,transparent 61%)}
+body.theme-dark[data-wallpaper=black] .glass-flow-spark{border-color:#8888;box-shadow:none}
+@media(min-width:700px){.solid-mode-options button{min-height:88px;padding:16px}.solid-mode-options b{font-size:15px}.solid-mode-options small{font-size:12px}}
+
+body:is([data-wallpaper=white],[data-wallpaper=black]) .sheet-overlay{backdrop-filter:none;-webkit-backdrop-filter:none}
