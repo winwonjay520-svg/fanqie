@@ -6,8 +6,8 @@ android {
         applicationId 'com.lumifocus.app'
         minSdk 26
         targetSdk 35
-        versionCode 20
-        versionName '2.6.0'
+        versionCode 27
+        versionName '2.9.4'
         testInstrumentationRunner 'com.lumifocus.app.SmokeInstrumentation'
     }
     compileOptions {

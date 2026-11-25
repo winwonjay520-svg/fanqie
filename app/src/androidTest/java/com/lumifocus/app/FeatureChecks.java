@@ -78,7 +78,7 @@ final class FeatureChecks {
         check(CalendarDates.occurrence("2026-11-13","weekly",LocalDate.of(2026,11,20)).toString().equals("2026-11-20"),"Native weekly repeat keeps today at zero days");
         ui("navigate('events');editEvent();$('eventTitle').value='每年的期待';$('eventDate').value='2020-01-01';$('eventRepeat').value='yearly';$('saveEvent').click()");
         JSONArray events=state().getJSONArray("events");check(events.getJSONObject(events.length()-1).getString("repeat").equals("yearly"),"Countdown-date editor persists repeat choice");
-        check(yes("const e=data.events.find(e=>e.title==='每年的期待');return LumiFeaturesData.occurrence(e,localDay())>=localDay()&&$('eventList').textContent.includes('每年重复')"),"Repeated countdown cards display their next occurrence");
+        check(yes("const e=data.events.find(e=>e.title==='每年的期待');openDayDetail(e.id);const next=LumiFeaturesData.occurrence(e,localDay());const shown=$('dayDetailDate').dateTime;handleBack();return next>=localDay()&&shown===next"),"Repeated countdown detail displays the next occurrence");
     }
     private void workflowChecks() throws Exception{
         ui("closeSheet();command('reset');command('workflowSave',{value:{focus:1,short:1,long:1,rounds:2,auto:true}});command('flowStart')");int before=state().getJSONArray("sessions").length();

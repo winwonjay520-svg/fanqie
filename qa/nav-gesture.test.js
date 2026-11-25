@@ -45,6 +45,7 @@ async function exercise(browser, width, height) {
   await tab.waitForFunction(() => document.querySelector('.nav-capsule').style.getPropertyValue('--nav-drag-index') !== '');
   assert.deepEqual(await state(), ['workspace', 2], 'drag previews without rendering the destination');
   assert.equal(await chosen(), 'workspace', 'screen readers keep the committed destination during preview');
+  assert.equal(await nav.locator('.nav-capsule').evaluate(el => el.style.getPropertyValue('--lens-stretch')), '', 'reduced motion suppresses stretching');
   const mid = {x: (centers[2].x * 3 + centers[3].x) / 4, y: (centers[2].y * 3 + centers[3].y) / 4};
   await touch('touchMove', mid);
   const axis = vertical ? 'y' : 'x';
@@ -83,6 +84,55 @@ async function exercise(browser, width, height) {
   await tab.evaluate(() => { data.settings.navigationHaptics = false; });
   await buttons.nth(2).tap();
   assert.deepEqual(await state(), ['events', 6], 'turning off navigation haptics preserves selection');
+  await tab.emulateMedia({reducedMotion:'no-preference'});
+  await touch('touchStart', centers[2]);
+  await touch('touchMove', centers[1]);
+  await tab.waitForFunction(() => +document.querySelector('.nav-capsule').style.getPropertyValue('--lens-stretch') > 1);
+  assert.ok(await nav.locator('.nav-capsule').evaluate(el => +el.style.getPropertyValue('--lens-compress') < 1));
+  const arrivingIcon = buttons.nth(1).locator('[data-icon]');
+  assert(await arrivingIcon.locator('.nav-stroke').evaluate(path =>
+   path.getAnimations().some(a=>a.effect.getKeyframes().some(f=>f.strokeDashoffset))),
+   'the check mark draws on the icon during drag, before committing the page');
+  assert(await arrivingIcon.evaluate(el => new DOMMatrix(getComputedStyle(el).transform).a > 1.1), 'the actual destination icon lifts under the moving capsule');
+  assert.equal(await tab.locator('.glass-flow,.glass-flow-layer').count(),0);
+  await touch('touchEnd');
+  assert.deepEqual(await state(), ['workspace', 6]);
+  await tab.waitForFunction(() => !document.querySelector('.nav-releasing'));
+  for (const [index,count] of [[3,3],[0,1],[2,1]]) {
+   await buttons.nth(index).tap();
+   await tab.waitForFunction(i=>document.querySelectorAll('.bottom-nav [data-page]')[i].getAttribute('aria-current')==='page',index);
+   assert.equal(await buttons.nth(index).locator('.nav-stroke').evaluateAll(strokes=>
+    strokes.filter(stroke=>stroke.getAnimations().length).length),count,'tap animates the glyph details');
+  }
+  await tab.emulateMedia({reducedMotion:'reduce'});
+  await buttons.nth(1).tap();
+  assert.equal(await tab.locator('.nav-stroke').evaluateAll(strokes=>strokes.flatMap(s=>s.getAnimations()).length),0);
+  await tab.emulateMedia({reducedMotion:'no-preference'});
+  assert.equal(await nav.locator('.nav-capsule').evaluate(el => el.style.getPropertyValue('--lens-stretch')), '');
+  const control = tab.locator('#appearanceButton');
+  const pointer = {pointerType:'touch', pointerId:77, isPrimary:true, button:0};
+  await control.dispatchEvent('pointerdown', pointer);
+  await tab.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('#appearanceButton')).scale) > 1.01);
+  // Keep holding after the short optical ripple finishes. The button should
+  // stay compressed until this pointer lifts, then retire its animation.
+  await tab.waitForTimeout(650);
+  assert.ok(await control.evaluate(el => parseFloat(getComputedStyle(el).scale) > 1.01));
+  await control.dispatchEvent('pointerup', pointer);
+  await tab.waitForFunction(() => !window.glassMotion.activeCount);
+  assert.equal(await control.evaluate(el => getComputedStyle(el).scale), 'none');
+  await control.dispatchEvent('pointerdown', {...pointer,clientX:48,clientY:48});
+  const pullDistance=async dx=>{
+   await control.dispatchEvent('pointermove',{...pointer,clientX:48+dx,clientY:48});
+   await tab.evaluate(()=>new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done))));
+   return control.evaluate(el=>parseFloat(getComputedStyle(el).translate));
+  };
+  const near=await pullDistance(14), far=await pullDistance(84);
+  assert(near>0 && far>near+4 && far<=12,'longer pull has stronger bounded stretch');
+  await control.dispatchEvent('pointerup',pointer);
+  const frames=await control.evaluate(el=>el.getAnimations().flatMap(a=>a.effect.getKeyframes()).filter(f=>f.translate));
+  assert(frames.some(f=>parseFloat(f.translate)<-1),'drag rebounds past rest');
+  await tab.waitForFunction(()=>!window.glassMotion.activeCount);
+  assert.equal(await control.evaluate(el=>getComputedStyle(el).translate),'none');
   console.log('PASS navigation gestures '+width+' × '+height+(vertical?' side rail':' bottom bar'));
  } finally { await context.close(); }
 }

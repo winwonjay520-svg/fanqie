@@ -16,7 +16,7 @@ public final class Store {
         if (instance == null) instance = new Store(c.getApplicationContext());
         return instance;
     }
-    private Store(Context c) {
+    Store(Context c) {
         context = c; prefs = c.getSharedPreferences("lumi_v1", Context.MODE_PRIVATE);
         try { data = new JSONObject(prefs.getString("data", "{}")); } catch (Exception e) { data = new JSONObject(); }
         try {
@@ -53,6 +53,25 @@ public final class Store {
         for(String key:new String[]{"_revision","_historyRevision","_eventsRevision","_workspaceRevision"})next.put(key,data.optLong(key)+1);
         if(!prefs.edit().putString("data",next.toString()).commit())throw new IllegalStateException("恢复失败，本地空间不足");data=next;
     }
+    synchronized EventImport.Merge importEvents(EventImport document) throws JSONException {
+        String currentPin = data.optString("pinnedEventId");
+        EventImport.Merge merged = document.merge(data.getJSONArray("events"), currentPin);
+        if (merged.added == 0 && merged.pinnedId.equals(currentPin)) return merged;
+        // Only the events array is replaced. Share untouched values while holding the store lock.
+        JSONObject next = new JSONObject();
+        for (java.util.Iterator<String> keys = data.keys(); keys.hasNext();) {
+            String key = keys.next();
+            next.put(key, data.get(key));
+        }
+        next.put("events", merged.events).put("pinnedEventId", merged.pinnedId);
+        next.put("_eventsRevision", data.optLong("_eventsRevision") + 1);
+        next.put("_revision", data.optLong("_revision") + 1);
+        if (!prefs.edit().putString("data", next.toString()).commit())
+            throw new IllegalStateException("无法保存倒数日，请检查本地存储空间");
+        data = next;
+        return merged;
+    }
+
     public synchronized String poll(long knownRevision) {
         if(knownRevision!=data.optLong("_revision"))return snapshot();
         try {return new JSONObject().put("_revision",knownRevision).put("timer",new JSONObject(data.getJSONObject("timer").toString()).put("elapsedNow",elapsed())).put("audioActive",AmbientService.active()).put("appearance",WallpaperStore.state(context)).toString();}
@@ -211,6 +230,14 @@ public final class Store {
                 case "eventDelete":
                     JSONArray list = data.getJSONArray("events");
                     for (int i = list.length()-1; i >= 0; i--) if (list.getJSONObject(i).getString("id").equals(cmd.getString("id"))) list.remove(i);
+                    if (cmd.getString("id").equals(data.optString("pinnedEventId"))) data.put("pinnedEventId", "");
+                    data.put("_eventsRevision",data.optLong("_eventsRevision")+1);
+                    break;
+                case "pinEvent":
+                    String pin = cmd.getString("id");
+                    if (!pin.isEmpty() && WorkspaceFeatures.find(data.getJSONArray("events"),pin)==null)
+                        throw new IllegalArgumentException("倒数日已不存在");
+                    data.put("pinnedEventId", pin);
                     data.put("_eventsRevision",data.optLong("_eventsRevision")+1);
                     break;
                 default: if(!WorkspaceFeatures.command(data,cmd))throw new IllegalArgumentException("未知操作");

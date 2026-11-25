@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const {chromium} = require('./browser-runtime/node_modules/playwright');
 
 const assets = path.resolve(__dirname, '../app/src/main/assets');
-const output = path.join(__dirname, 'screenshots-2.6.0');
+const output = path.join(__dirname, 'screenshots-2.7.0');
 
 async function checkProfile(browser, name, width, height) {
   const page = await browser.newPage({viewport: {width, height}});
@@ -69,6 +69,8 @@ async function checkProfile(browser, name, width, height) {
   assert.deepEqual(clear, await optics(homeCard), 'preview should use the material applied to the app');
   assert.match(clear.color, /^rgba\(/);
   assert.match(clear.blur, /blur\(/);
+  assert.ok(parseFloat(clear.blur.slice(5)) <= 4, 'clear glass preserves the wallpaper detail');
+  assert.ok(parseFloat(clear.color.split(',')[3]) < .56, 'photo glass stays translucent at the default preset');
   await click('[data-material="soft"]');
   assert.notEqual((await optics(sample)).blur, clear.blur);
   await click('[data-material="eco"]');

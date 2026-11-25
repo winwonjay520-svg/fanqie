@@ -22,7 +22,7 @@ function buildStatsImage(){
  card(60,515,960,425);text('本周的轨迹',100,575,32);text(comparisonText(week),100,620,24,'#8296a3');const max=Math.max(60,...week.days.map(d=>d.seconds));
  week.days.forEach((d,i)=>{const x=110+i*125,h=d.seconds/max*190;ctx.fillStyle='#eaf0f4';ctx.fillRect(x,670,64,190);if(h>0){ctx.fillStyle='#89aabd';ctx.fillRect(x,860-h,64,h);}text(['一','二','三','四','五','六','日'][i],x+17,903,23,'#8296a3',40);});
  card(60,970,960,425);text('时间的方向 · 标签',100,1030,32);if(tags.length){const maxTag=tags[0].seconds;tags.forEach((t,i)=>{const y=1085+i*56;text(t.name,100,y,24,'#496577',460);text(durationLabel(t.seconds),640,y,23,'#8296a3',320);ctx.fillStyle='#e9f0f4';ctx.fillRect(100,y+14,850,5);ctx.fillStyle='#9cb9c4';ctx.fillRect(100,y+14,850*t.seconds/maxTag,5);});}else text('从一次专注开始，积累会慢慢发生。',100,1150,28,'#8296a3');
- text('小小的坚持，也值得被看见。',72,1460,28);text('番茄 2.6.0 · '+new Date().toLocaleString('zh-CN'),72,1510,21,'#8296a3');return canvas;
+ text('小小的坚持，也值得被看见。',72,1460,28);text('番茄 2.9.4 · '+new Date().toLocaleString('zh-CN'),72,1510,21,'#8296a3');return canvas;
 }
 function showBackupPanel(){
  sheet('把积累好好保存',`<p class="sheet-description">完整备份包含专注记录、任务、计划、心情、设置和照片背景，可在另一台设备恢复。</p><button class="primary" id="exportFullBackup">导出完整 ZIP 备份</button><button class="text-button" id="importFullBackup" ${active()?'disabled':''}>选择备份并预览恢复</button><button class="text-button" id="exportLegacyJson">导出 JSON 数据归档</button><p id="backupError" class="error-text"></p><p class="sheet-footer">恢复会替换当前数据；正在计时或暂停时，请先结束。<br>备份中的运行计时恢复为暂停，环境声音保持停止。<br>JSON 归档不包含照片；完整备份建议选择 ZIP。</p>`);
@@ -45,10 +45,5 @@ const editEventBeforeRepeat=editEvent;
 editEvent=function(id){
  editEventBeforeRepeat(id);const row=data.events.find(e=>e.id===id),label=document.createElement('label');label.className='form-label';label.htmlFor='eventRepeat';label.textContent='重复周期';const select=document.createElement('select');select.className='field';select.id='eventRepeat';select.innerHTML='<option value="none">不重复</option><option value="weekly">每周</option><option value="monthly">每月</option><option value="yearly">每年</option>';select.value=row?.repeat||'none';$('sheetBody').insertBefore(label,$('formError'));$('sheetBody').insertBefore(select,$('formError'));
  $('saveEvent').onclick=()=>{const title=$('eventTitle').value.trim(),date=$('eventDate').value;if(!title||!date||!$('eventDate').checkValidity()){$('formError').textContent='请填写名称，并选择有效日期';return;}const value={title,date,category:$('eventCategory').value,color:editingColor,repeat:$('eventRepeat').value};if(id)value.id=id;if(command('eventSave',{value})){closeSheet();toast('期待已保存');}};
-};
-renderEvents=function(){
- const today=localDay(),items=data.events.map(e=>({...e,next:LumiFeaturesData.occurrence(e,today)})).sort((a,b)=>{const da=dayIndex(a.next)-dayIndex(today),db=dayIndex(b.next)-dayIndex(today);return (da<0)-(db<0)||Math.abs(da)-Math.abs(db);});
- if(!items.length){$('eventList').innerHTML=emptyWorkspace('给未来留一点期待','添加纪念日、旅行、考试或下一次见面的日子。');return;}
- $('eventList').innerHTML=items.map(e=>{const diff=dayIndex(e.next)-dayIndex(today),repeat={weekly:'每周',monthly:'每月',yearly:'每年'}[e.repeat];return `<article class="glass event-card ${['peach','blue'].includes(e.color)?e.color:''}"><div class="event-kind"><span class="status-dot"></span>${escapeHTML(e.category||'生活期待')}${repeat?' · '+repeat+'重复':''}</div><h2 class="event-title">${escapeHTML(e.title)}</h2><p class="event-date">${escapeHTML(e.next.replaceAll('-',' / '))}${repeat?'<small>原始日期 '+escapeHTML(e.date)+'</small>':''}</p><div class="event-bottom"><div class="event-number">${Math.abs(diff)}<small>${diff>0?'天后到来':diff===0?'就是今天':'天已过去'}</small></div><button data-edit-event="${escapeHTML(e.id)}" aria-label="编辑 ${escapeHTML(e.title)}">编辑 ↗</button></div></article>`;}).join('');
 };
 if(data)render();

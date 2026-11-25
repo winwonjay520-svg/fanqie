@@ -3,8 +3,8 @@ body {
   --pane-light: #ffffffc7;
   --pane-line: #21272c25;
   --pane-shadow: #17212d0c;
-  --pane-depth: inset 0 1px 0 var(--pane-light), inset 0 -1px 0 #ffffff12,
-                0 3px 8px var(--pane-shadow), 0 12px 34px var(--pane-shadow);
+  --pane-depth: inset 1px 1px 1px var(--pane-light), inset -1px -1px 1px #95a8b34d,
+                inset 0 -2px 1px #ffffff40, 0 2px 6px var(--pane-shadow), 0 8px 24px var(--pane-shadow);
 }
 body.theme-dark {
   --pane-light: #ffffff33;
@@ -18,23 +18,23 @@ body.photo-background {
   --photo-sub: #253442;
   /* The wallpaper veil already contributes contrast. Ease in the extra tint
      so the entire coverage slider responds, even with text protection on. */
-  --reading-floor: max(.18, calc(.56 - var(--wallpaper-dim) * .48));
-  --pane-fill: calc(var(--reading-floor) + (.85 - var(--reading-floor)) * var(--glass-alpha) * var(--glass-alpha));
+  --reading-floor: max(.12, calc(.47 - var(--wallpaper-dim) * .62));
+  --pane-fill: calc(var(--reading-floor) + (.80 - var(--reading-floor)) * var(--glass-alpha) * var(--glass-alpha));
 }
 body.photo-background.theme-dark {
   --photo-ink: #fff;
   --photo-sub: #f1f5fc;
-  --reading-floor: max(.30, calc(.67 - var(--wallpaper-dim) * .44));
+  --reading-floor: max(.16, calc(.52 - var(--wallpaper-dim) * .60));
 }
 body.photo-background[data-legibility=false] {
-  --pane-fill: var(--glass-alpha);
+  --pane-fill: calc(var(--glass-alpha) * var(--glass-alpha));
 }
 body.palette-theme {
   --pane-tint: var(--palette-tint);
-  --pane-fill: calc(.17 + .60 * var(--glass-alpha));
+  --pane-fill: calc(.08 + .56 * var(--glass-alpha));
 }
 body.liquid {
-  --pane-filter: blur(7px) saturate(1.12);
+  --pane-filter: blur(3px) saturate(1.15);
 }
 body.liquid[data-material=soft] {
   --pane-filter: blur(17px) saturate(1.04);
@@ -60,8 +60,9 @@ body.photo-background #todoWorkflow {
     backdrop-filter: var(--pane-filter);
   }
   body:is(.photo-background,.palette-theme).liquid:not([data-material=eco]) .glass::before {
-    background: radial-gradient(ellipse 95% 23% at 6% 0%, #ffffff40, transparent 75%);
-    opacity: .34;
+    background: radial-gradient(ellipse 59% 5px at 18% 0%, #ffffffd1, transparent 92%),
+                radial-gradient(ellipse 40% 4px at 84% 100%, #ffffff8c, transparent 95%);
+    opacity: .68;
   }
   body:is(.photo-background,.palette-theme).liquid:not([data-material=eco]) .glass.touched::before {
     opacity: .8;
@@ -89,7 +90,7 @@ body.photo-background #todoWorkflow {
   }
   /* Keep a denser surface under the dock labels when content scrolls below. */
   body:is(.photo-background,.palette-theme).liquid:not([data-material=eco]) .bottom-nav {
-    background: rgba(var(--pane-tint), max(.62, var(--pane-fill)));
+    background: rgba(var(--pane-tint), max(.47, var(--pane-fill)));
     box-shadow: inset 0 1px 0 var(--pane-light), 0 4px 18px #071a2f24;
   }
   #focusScene[data-background=photo][data-liquid=true]:not([data-material=eco]) :is(.scene-glass,.scene-dial) {
@@ -108,14 +109,14 @@ body.photo-background #todoWorkflow {
 
 /* Neutral glass uses stationary reflections on the plain background. */
 body[data-wallpaper=white] {
-  --solid-pane: linear-gradient(137deg, #fff 14%, #fafafa 79%, #fff) #fff;
+  --solid-pane: linear-gradient(137deg, #fff9, #ffffff21 52%, #e4e7eb24);
   --hero-ink: #fff;
   --hero-face: linear-gradient(145deg, #494949, #272727 65%, #383838);
   --hero-edge: #272727;
   --dock-tint: 255,255,255;
 }
 body[data-wallpaper=black] {
-  --solid-pane: linear-gradient(137deg, #202020, #101010 64%, #161616) #111;
+  --solid-pane: linear-gradient(137deg, #ffffff14, #ffffff08 58%, #ffffff0f);
   --hero-ink: #1c1c1c;
   --hero-face: linear-gradient(145deg, #fafafa, #cecece 75%, #e7e7e7);
   --hero-edge: #e4e4e4;
@@ -132,6 +133,9 @@ body.liquid:is([data-wallpaper=white],[data-wallpaper=black]):not([data-material
   background: var(--solid-pane);
   border-color: var(--pane-line);
   box-shadow: var(--pane-depth);
+}
+body.liquid:is([data-wallpaper=white],[data-wallpaper=black]):not([data-material=eco]) .sheet {
+  background-color: rgba(var(--dock-tint), .95);
 }
 body.liquid:is([data-wallpaper=white],[data-wallpaper=black]):not([data-material=eco])
     :is(.todo-free-icon,#todoFirst,#todoStartSelected,#addTodoButton) {
@@ -150,7 +154,7 @@ body.liquid:is([data-wallpaper=white],[data-wallpaper=black]):not([data-material
 }
 @supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
   body.liquid:is([data-wallpaper=white],[data-wallpaper=black]):not([data-material=eco]) .bottom-nav {
-    background: rgba(var(--dock-tint), .74);
+    background: rgba(var(--dock-tint), .58);
     -webkit-backdrop-filter: var(--pane-filter);
     backdrop-filter: var(--pane-filter);
   }

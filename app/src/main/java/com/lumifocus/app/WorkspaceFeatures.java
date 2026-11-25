@@ -8,6 +8,7 @@ import java.util.*;
 final class WorkspaceFeatures {
     private WorkspaceFeatures() {}
     static void defaults(JSONObject d) throws JSONException {
+        if(!d.has("pinnedEventId"))d.put("pinnedEventId","");
         if(!d.has("tasks"))d.put("tasks",new JSONArray());
         if(!d.has("planner"))d.put("planner",new JSONObject().put("weekGoal",600).put("items",new JSONArray()));
         if(!d.has("workflow"))d.put("workflow",new JSONObject().put("focus",1500).put("short",300).put("long",900).put("rounds",4).put("auto",false));
@@ -96,6 +97,7 @@ final class WorkspaceFeatures {
         ids.clear();for(int i=0;i<tasks.length();i++){JSONObject row=task(tasks.getJSONObject(i));if(!ids.add(row.getString("id")))throw new IllegalArgumentException("任务标识重复");tasks.put(i,row);}
         ids.clear();for(int i=0;i<plans.length();i++){JSONObject row=plan(plans.getJSONObject(i));if(!ids.add(row.getString("id")))throw new IllegalArgumentException("计划标识重复");plans.put(i,row);}
         ids.clear();for(int i=0;i<events.length();i++){JSONObject row=events.getJSONObject(i);if(!ids.add(row.getString("id")))throw new IllegalArgumentException("倒计日标识重复");text(row,"title",40,true);date(row.getString("date"),false);CalendarDates.validateRepeat(row.optString("repeat","none"));}
+        if (!ids.contains(d.opt("pinnedEventId"))) d.put("pinnedEventId", "");
         number(d.getJSONObject("planner"),"weekGoal",1,10080);d.put("workflow",workflow(d.getJSONObject("workflow")));d.put("mixer",mixer(d.getJSONObject("mixer")).put("playing",false));
         JSONObject pref=d.getJSONObject("preferences");if(!Arrays.asList("digital","ring").contains(pref.optString("clockStyle"))||!Arrays.asList("timer","clock").contains(pref.optString("clockFace")))throw new IllegalArgumentException("备份时钟设置无效");
         // A restored workflow requires an explicit restart; never launch background rounds from a file.

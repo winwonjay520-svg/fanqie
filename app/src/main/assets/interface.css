@@ -1,0 +1,85 @@
+/* Shared type, surfaces and controls. Wallpaper and material retain their
+   own colour and optical properties. */
+.glass-pulled { translate:var(--pull-offset); scale:var(--pull-shape); }
+body {
+ --ui-line: rgba(85,100,118,.2);
+ --ui-wash: rgba(112,128,144,.09);
+ --ui-radius: clamp(16px,2vw,24px);
+}
+body.theme-dark {
+ --ui-line: rgba(195,208,224,.22);
+ --ui-wash: rgba(220,230,242,.09);
+}
+.page-mast, #todoHome .todo-heading {
+ display:flex; align-items:center; justify-content:space-between; gap:16px;
+ margin:clamp(10px,2vh,24px) 0 20px;
+}
+.page-mast h1, #todoHome .todo-heading h1 {
+ margin:0; font-size:clamp(29px,4.4vw,43px); line-height:1.18; font-weight:720;
+ letter-spacing:-.045em; color:var(--ink);
+}
+.mast-mark {
+ display:grid; place-items:center; width:44px; height:44px; flex:none;
+ border:1px solid var(--ui-line); border-radius:15px; background:var(--ui-wash);
+}
+.mast-mark svg { width:22px; height:22px; }
+.photo-background .page-mast {
+ border-radius:var(--ui-radius); padding:12px 16px; background:rgba(var(--photo-tint),.85);
+}
+.header-actions button.icon-button, .sheet-heading .icon-button { border-radius:14px; }
+#todoHome .todo-heading .eyebrow {
+ margin:0 0 6px; font-size:12px; letter-spacing:.04em; color:var(--sub);
+}
+#todoHome #todoManage, .workspace-toolbar .small-primary {
+ min-height:40px; padding:0 14px; border:1px solid var(--ui-line); border-radius:999px;
+}
+#todoHome .todo-card { border-radius:var(--ui-radius); }
+#todoHome .todo-card-list { gap:12px; }
+#todoHome .todo-card-name { margin-bottom:8px; font-weight:650; }
+#todoHome .todo-card-start { border-radius:999px; }
+#todoQuick .todo-free-copy b { font-size:clamp(19px,3vw,25px); letter-spacing:-.025em; }
+#todoQuick .todo-free-copy small { line-height:1.55; }
+.page .section-title h2,.reference-topline h2,.sheet-heading h2 { font-weight:680; letter-spacing:-.025em; }
+#workspaceOverview > .glass, #statsPage .glass:not(.segmented), .todo-setup-panel {
+ border-radius:var(--ui-radius);
+}
+#workspaceOverview strong,.reference-metrics strong,.summary-total strong,.todo-preview-time {
+ font-variant-numeric:tabular-nums; letter-spacing:-.035em;
+}
+#workspaceOverview .glass { border-inline-start:3px solid var(--ui-line); }
+#workspaceOverview .workspace-track { height:5px; border-radius:99px; overflow:hidden; }
+.page .segmented { border-radius:17px; padding:4px; }
+.page .segmented button { border-radius:13px; min-height:36px; }
+.page .segmented button.selected { font-weight:680; }
+.reference-metrics > div + div { border-inline-start:1px solid var(--ui-line); }
+.sheet .sheet-heading { border-bottom:1px solid var(--ui-line); padding-bottom:12px; margin-bottom:16px; }
+.sheet :is(input.field,select.field,textarea.field) { border-radius:13px; min-height:44px; }
+.sheet button.primary { min-height:46px; border-radius:15px; }
+#saveDayPin { width:100%; margin-top:18px; }
+button:focus-visible,select:focus-visible,input:focus-visible {
+ outline:2px solid #468fc9; outline-offset:2px;
+}
+#focusScene .scene-dock { border-radius:999px; }
+#focusScene .scene-task, #focusScene #sceneExit { border-radius:999px; }
+#largeClock .clock-toolbar button, #largeClock .clock-controls button {
+ border-radius:999px; border:1px solid #ffffff26;
+}
+#eventsPage .days-toolbar { background:linear-gradient(112deg,var(--days-accent),#076997); }
+#eventsPage #manageDayPin { background:#ffffff1e; border:1px solid #ffffff52; border-radius:99px; font-size:13px; }
+#manageDayPin[hidden] { display:none; }
+#eventList .day-row { min-height:46px; border-radius:12px; }
+#dayDetail .day-detail-actions {
+ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:5px; max-width:430px;
+}
+#dayDetail .day-detail-actions button {
+ flex-direction:column; padding:7px 1px; min-width:0; min-height:55px;
+ border-radius:16px; font-size:12px; gap:4px;
+}
+#dayDetail #dayDetailPin[aria-pressed=true] { background:var(--day-blue); color:#fff; }
+@media(orientation:landscape) and (max-height:600px) {
+ #dayDetail .day-detail-actions { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media(max-width:360px) {
+ #eventsPage .days-toolbar { gap:4px; padding-inline:9px; }
+ #daysHeading { font-size:22px; }
+}

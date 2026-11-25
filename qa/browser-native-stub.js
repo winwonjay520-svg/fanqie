@@ -8,9 +8,10 @@
  window.Native={poll:snapshot,appearance(raw){Object.assign(s.appearance,JSON.parse(raw));return JSON.stringify(s.appearance);},notifyPermission(){},focusSceneMode(){},clockMode(){},discardBackup(){},command(raw){const c=JSON.parse(raw);window.__nativeCalls.push(c);
   switch(c.action){
    case 'eventSave':{const e={...c.value,id:c.value.id||crypto.randomUUID()};const i=s.events.findIndex(x=>x.id===e.id);if(i<0)s.events.push(e);else s.events[i]=e;s._eventsRevision++;break;}
+   case 'pinEvent':s.pinnedEventId=c.id;s._eventsRevision++;break;
    case 'settings':Object.assign(s.settings,c.value);break;
    case 'configure':s.timer={...initial.timer,mode:c.mode,duration:c.duration,label:c.label,taskId:c.taskId};base=0;break;
-   case 'eventDelete':s.events=s.events.filter(x=>x.id!==c.id);s._eventsRevision++;break;
+   case 'eventDelete':s.events=s.events.filter(x=>x.id!==c.id);if(s.pinnedEventId===c.id)s.pinnedEventId='';s._eventsRevision++;break;
    case 'taskSave':{const t={...c.value,id:c.value.id||crypto.randomUUID(),created:Date.now()};const i=s.tasks.findIndex(x=>x.id===t.id);if(i<0)s.tasks.push(t);else s.tasks[i]=t;s._workspaceRevision++;break;}
    case 'startTask':s.timer={mode:c.mode,duration:c.duration,label:c.label||'自由专注',taskId:c.taskId||'',elapsed:0,status:'running'};base=performance.now();break;
    case 'pause':s.timer.elapsed=elapsed();s.timer.status='paused';break;

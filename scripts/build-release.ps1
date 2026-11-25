@@ -28,7 +28,7 @@ try {
     }
     $toolsPath = Join-Path $SdkRoot 'build-tools\36.0.0'
     $aligned = Join-Path $outputDir 'lumi-aligned.apk'
-    $apk = Join-Path $outputDir 'Fanqie-2.6.0.apk'
+    $apk = Join-Path $outputDir 'Fanqie-2.9.4.apk'
     & "$toolsPath\zipalign.exe" -f -p 4 app\build\outputs\apk\release\app-release-unsigned.apk $aligned
     if ($LASTEXITCODE -ne 0) { throw 'APK alignment failed' }
     & "$toolsPath\apksigner.bat" sign --ks $keyPath --ks-key-alias lumi --ks-pass env:LUMI_SIGNING_PASSWORD --key-pass env:LUMI_SIGNING_PASSWORD --out $apk $aligned

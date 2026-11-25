@@ -20,10 +20,15 @@
 <link rel="stylesheet" href="glass-polish.css">
 <link rel="stylesheet" href="appearance-editor.css">
 <link rel="stylesheet" href="nav-gesture.css">
+
+<link rel="stylesheet" href="days-list.css">
+<link rel="stylesheet" href="days-detail.css">
+<link rel="stylesheet" href="interface.css">
+<script src="liquid-spring.js"></script>
 <div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="wallpaper-layer" aria-hidden="true"><div class="wallpaper-image"></div><div class="wallpaper-shade"></div></div>
 <div class="app">
-  <header><div class="brand"><div class="brand-icon" data-icon="spark"></div><span>番茄</span></div><div class="header-actions"><button class="icon-button glass" id="appearanceButton" aria-label="背景与液态玻璃"></button><button class="icon-button glass" id="settingsButton" aria-label="设置" data-icon="settings"></button></div></header>
+  <header><div class="brand"><div class="brand-icon"><img src="tomato-mark.svg" width="26" height="26" alt=""></div><span>番茄</span></div><div class="header-actions"><button class="icon-button glass" id="appearanceButton" aria-label="背景与液态玻璃"></button><button class="icon-button glass" id="settingsButton" aria-label="设置" data-icon="settings"></button></div></header>
   <main>
     <section id="focusPage" class="page active">
       <div class="eyebrow" id="todayLabel"></div>
@@ -48,20 +53,29 @@
       </div></div>
     </section>
     <section id="workspacePage" class="page">
-      <div class="eyebrow">A LITTLE PLAN, A LITTLE PROGRESS</div><h1>想做的事，<br>慢慢完成<span class="heading-dot">。</span></h1><p class="page-subtitle">从一个小计划开始，给时间一个方向</p>
+      <div class="page-mast"><h1>我的计划</h1><span class="mast-mark" aria-hidden="true" data-icon="check"></span></div>
       <div id="workspaceOverview" class="workspace-overview"></div>
       <div class="segmented glass workspace-tabs" id="workspaceTabs"><button data-workspace-view="tasks" class="selected">任务</button><button data-workspace-view="week">周计划</button><button data-workspace-view="calendar">学习日历</button></div>
       <div class="workspace-toolbar"><div id="workspaceFilters"><button data-task-filter="open" class="selected">待完成</button><button data-task-filter="done">已完成</button><button data-task-filter="all">全部</button></div><button id="addWorkspaceItem" class="small-primary">＋ 添加任务</button></div>
       <div id="workspaceContent"></div>
     </section>
-    <section id="eventsPage" class="page">
-      <div class="eyebrow">DAYS TO REMEMBER</div><div class="heading-row"><div><h1>心有所期<span class="heading-dot">。</span></h1><p class="page-subtitle">让每一个期待，都有清晰的刻度</p></div></div>
-      <button class="primary add-event" id="addEvent"><span data-icon="plus"></span>添加倒计日</button>
-      <div id="eventList"></div>
-      <p class="soft-note">按本地日期计算 · 到来的那一天是第 0 天</p>
+    <section id="eventsPage" class="page" aria-labelledby="daysHeading">
+      <div class="days-toolbar">
+        <span class="days-calendar-mark" data-icon="calendar" aria-hidden="true"></span>
+        <h1 id="daysHeading">倒数日</h1>
+        <button type="button" id="manageDayPin" aria-haspopup="dialog" hidden>设置置顶</button>
+        <button type="button" id="importEvents" aria-label="从文件合并导入倒数日">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></svg><span>导入</span>
+        </button>
+        <button type="button" id="addEvent" aria-label="添加倒数日" data-icon="plus"></button>
+      </div>
+      <div class="days-board">
+        <div id="featuredDay"></div>
+        <div id="eventList" aria-label="倒数日列表"></div>
+      </div>
     </section>
     <section id="statsPage" class="page">
-      <div class="eyebrow">SMALL STEPS, REAL GROWTH</div><h1>时间会记得<span class="heading-dot">。</span></h1><p class="page-subtitle">看见每一份认真，慢慢成为更好的自己</p>
+      <div class="page-mast"><h1>专注统计</h1><span class="mast-mark" aria-hidden="true" data-icon="chart"></span></div>
       <div id="referenceStatsTop"></div>
       <div class="segmented glass stats-tabs" id="rangeTabs"><button data-range="7" class="selected">近 7 天</button><button data-range="30">近 30 天</button><button data-range="all">全部</button></div>
       <div id="richStats"></div><button id="exportStatsButton" class="text-button export-stats-button">导出统计图片 ↗</button>
@@ -89,4 +103,5 @@
 <div id="sheetOverlay" class="sheet-overlay" hidden><section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="sheet-handle"></div><div class="sheet-heading"><h2 id="sheetTitle"></h2><button id="closeSheet" class="icon-button" aria-label="关闭" data-icon="close"></button></div><div id="sheetBody"></div></section></div>
 <div id="largeClock" class="large-clock" hidden role="dialog" aria-label="横屏大时钟"><div class="clock-toolbar"><button id="clockExit">↙ 返回</button><div><button data-clock-face="timer">计时</button><button data-clock-face="clock">时钟</button></div><button id="clockStyleButton">切换样式</button></div><div class="clock-center"><div id="clockDate"></div><div id="clockTime" role="timer" aria-live="off">00:00</div><div id="clockDigits" aria-hidden="true"></div><div id="clockTask"></div></div><div class="clock-controls"><button id="clockToggle" class="glass">开始专注</button><span>给重要的事，完整的一刻</span></div></div>
 <div id="toast" class="toast" role="status"></div>
-<script src="charts-data.js"></script><script src="features-data.js"></script><script src="app.js"></script><script src="appearance.js"></script><script src="enhancements.js"></script><script src="glass-motion.js"></script><script src="charts.js"></script><script src="workspace.js"></script><script src="flip-clock.js"></script><script src="focus-features.js"></script><script src="insight-features.js"></script><script src="event-date-picker.js"></script><script src="reference-stats.js"></script><script src="focus-scene.js"></script><script src="todo-home.js"></script><script src="nav-gesture.js"></script></body></html>
+<script src="charts-data.js"></script><script src="features-data.js"></script><script src="app.js"></script><script src="appearance.js"></script><script src="enhancements.js"></script><script src="glass-motion.js"></script><script src="charts.js"></script><script src="workspace.js"></script><script src="flip-clock.js"></script><script src="focus-features.js"></script><script src="insight-features.js"></script><script src="event-date-picker.js"></script><script src="reference-stats.js"></script><script src="focus-scene.js"></script><script src="todo-home.js"></script><script src="nav-gesture.js"></script>
+<script src="days-list.js"></script><script src="days-detail.js"></script></body></html>

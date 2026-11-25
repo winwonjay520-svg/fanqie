@@ -3,7 +3,7 @@
 // This checks UI routing and command payloads; it does not substitute for Android device tests.
 const {chromium}=require('./browser-runtime/node_modules/playwright');
 const fs=require('node:fs/promises'),path=require('node:path'),assert=require('node:assert/strict');
-const assets=path.resolve(__dirname,'../app/src/main/assets'),shots=path.resolve(__dirname,'screenshots-2.6.0');
+const assets=path.resolve(__dirname,'../app/src/main/assets'),shots=path.resolve(__dirname,'screenshots-2.7.0');
 const profiles=[['phone',360,616],['phone-tall',420,909],['tablet',1696,1176]];
 let count=0;function ok(value,label){assert(value,label);count++;console.log('PASS '+label);}
 (async()=>{

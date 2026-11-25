@@ -41,7 +41,7 @@ function applyAppearance(value){
  if($('positionControl'))$('positionControl').hidden=!photo;
  if($('materialHint')){
   const material=a.material||'clear',solid=['white','black'].includes(a.preset);
-  $('materialHint').textContent=!a.liquid?'打开液态玻璃即可显示流动高光。':{
+  $('materialHint').textContent=!a.liquid?'打开后可使用透明玻璃材质。':{
    clear:'清晰透出底色，边缘保留细微高光。',soft:'柔化背后的细节，让文字更突出。',eco:'使用静态材质，减少模糊渲染。'
   }[material];
   $('backgroundTuning').hidden=solid;
@@ -142,7 +142,6 @@ closeSheet=function(){if(appearanceOpen)flushAppearance();appearanceOpen=false;i
 // Keep callback lookups dynamic so all routes also flush an unfinished slider edit.
 $('closeSheet').onclick=()=>closeSheet();
 $('appearanceButton').innerHTML=icon('image');$('appearanceButton').onclick=appearance;
-document.addEventListener('pointerdown',e=>{if(!data?.appearance?.liquid)return;const card=e.target.closest('.glass,.timer-orb');if(!card)return;const rect=card.getBoundingClientRect();card.style.setProperty('--touch-x',((e.clientX-rect.left)/rect.width*100)+'%');card.style.setProperty('--touch-y',((e.clientY-rect.top)/rect.height*100)+'%');card.classList.add('touched');setTimeout(()=>card.classList.remove('touched'),550);},{passive:true});
 window.addEventListener('pagehide',()=>{if(appearanceWriteTimer)flushAppearance();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&appearanceWriteTimer)flushAppearance();});
 if(data)applyAppearance(data.appearance);

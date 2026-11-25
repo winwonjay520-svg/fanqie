@@ -23,8 +23,9 @@ public class SmokeInstrumentation extends Instrumentation {
     private String appearanceProfile;
     private String photoUploadProfile;
     private boolean taskSwitchOnly;
+    private boolean eventImportOnly;
     private String todoProfile;
-    @Override public void onCreate(Bundle args) { super.onCreate(args);restoreOnly=args!=null&&"true".equals(args.getString("restore"));perfOnly=args!=null&&"true".equals(args.getString("perf"));featuresOnly=args!=null&&"true".equals(args.getString("features"));profileOnly=args!=null&&"true".equals(args.getString("profile"));taskSwitchOnly=args!=null&&"true".equals(args.getString("taskSwitch"));tabletProfile=args==null?null:args.getString("tablet");navigationProfile=args==null?null:args.getString("navigation");appearanceProfile=args==null?null:args.getString("appearance");photoUploadProfile=args==null?null:args.getString("photoUpload");todoProfile=args==null?null:args.getString("todo");start(); }
+    @Override public void onCreate(Bundle args) { super.onCreate(args);eventImportOnly=args!=null&&"true".equals(args.getString("eventImport"));restoreOnly=args!=null&&"true".equals(args.getString("restore"));perfOnly=args!=null&&"true".equals(args.getString("perf"));featuresOnly=args!=null&&"true".equals(args.getString("features"));profileOnly=args!=null&&"true".equals(args.getString("profile"));taskSwitchOnly=args!=null&&"true".equals(args.getString("taskSwitch"));tabletProfile=args==null?null:args.getString("tablet");navigationProfile=args==null?null:args.getString("navigation");appearanceProfile=args==null?null:args.getString("appearance");photoUploadProfile=args==null?null:args.getString("photoUpload");todoProfile=args==null?null:args.getString("todo");start(); }
     private void check(boolean pass,String label) { if(!pass) throw new AssertionError(label); report.append("PASS ").append(label).append('\n'); }
     private JSONObject snap() throws Exception { return new JSONObject(store.snapshot()); }
     private void cmd(String json) throws Exception { JSONObject result = new JSONObject(store.command(json)); if(result.has("error")) throw new AssertionError(result.getString("error")); }
@@ -43,6 +44,11 @@ public class SmokeInstrumentation extends Instrumentation {
     @Override public void onStart() {
         Bundle results = new Bundle();
         try {
+            if (eventImportOnly) {
+                results.putString("stream", EventImportChecks.run(getTargetContext()));
+                finish(Activity.RESULT_OK, results);
+                return;
+            }
             store=Store.get(getTargetContext());
             activity=(MainActivity) startActivitySync(new Intent(getTargetContext(),MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             runOnMainSync(() -> web=(WebView)((ViewGroup)((ViewGroup)activity.findViewById(android.R.id.content)).getChildAt(0)).getChildAt(0));
@@ -214,7 +220,7 @@ public class SmokeInstrumentation extends Instrumentation {
         String motion=js("glassMotion.clear();const revision=data._revision;$('startButton').click();return {status:data.timer.status,delta:data._revision-revision,flows:glassMotion.activeCount,rect:$('startButton').getBoundingClientRect().toJSON(),view:todoView}");report.append("MOTION ").append(motion).append('\n');JSONObject motionState=new JSONObject(motion);
         check(motionState.getString("status").equals("running")&&motionState.getInt("delta")==1&&motionState.getInt("flows")==1,"Click starts a glass flow and executes timer action exactly once");
         Thread.sleep(150);
-        check("true".equals(js("const wave=document.querySelector('.glass-flow-wave');return !!wave&&wave.getAnimations().some(a=>a.currentTime>0&&a.playState==='running')")),"Glass ripple is a running expanding animation rather than a static highlight");
+        check("true".equals(js("return !document.querySelector('.glass-flow,.glass-flow-wave,.glass-flow-sheen')")),"Touch feedback keeps glass clear of decorative layers");
         android.graphics.Bitmap frame=getUiAutomation().takeScreenshot();
         try(java.io.FileOutputStream out=new java.io.FileOutputStream(new java.io.File(getTargetContext().getFilesDir(),"white-flow-frame.png"))){frame.compress(android.graphics.Bitmap.CompressFormat.PNG,100,out);}
         Thread.sleep(1000);
@@ -222,7 +228,7 @@ public class SmokeInstrumentation extends Instrumentation {
         js("command('pause');command('reset');glassMotion.clear();return true");
         check("true".equals(js("glassMotion.play($('resetButton'));return glassMotion.activeCount===0")),"Disabled buttons do not animate or accept flow effects");
         check("true".equals(js("for(let i=0;i<20;i++)glassMotion.play($('startButton'));return glassMotion.activeCount===1")),"Repeated taps replace the previous flow instead of accumulating overlays");
-        check("true".equals(js("return getComputedStyle(document.querySelector('.glass-flow-layer')).pointerEvents==='none'")),"Glass flow overlay never intercepts button or scroll input");
+        check("true".equals(js("return !document.querySelector('.glass-flow-layer')")),"No touch overlay intercepts button or scroll input");
         js("glassMotion.clear();updateAppearance({liquid:false});return true");
         check("true".equals(js("glassMotion.play($('startButton'));return glassMotion.activeCount===0")),"Disabling liquid glass also disables click flow");
         js("updateAppearance({liquid:true});return true");

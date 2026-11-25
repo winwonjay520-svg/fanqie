@@ -16,6 +16,9 @@ public class MainActivity extends Activity {
     private boolean largeClock;
     private boolean focusScene;
     private boolean sceneFullscreen;
+    private static final int PICK_EVENTS = 21;
+    private boolean pageReady;
+    private boolean importingEvents;
     private byte[] pendingWrite;
     private BackupStore.Prepared pendingBackup;
     private final java.util.concurrent.atomic.AtomicBoolean documentBusy=new java.util.concurrent.atomic.AtomicBoolean();
@@ -33,7 +36,7 @@ public class MainActivity extends Activity {
         web.getSettings().setAllowFileAccess(false);
         web.getSettings().setAllowContentAccess(false);
         web.setWebViewClient(new WebViewClient() {
-            @Override public void onPageFinished(WebView view,String url){if(getIntent().getBooleanExtra("openSounds",false)){getIntent().removeExtra("openSounds");view.evaluateJavascript("window.showSounds&&showSounds()",null);}}
+            @Override public void onPageFinished(WebView view,String url){pageReady=true;handleLaunchIntent();}
             @Override public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest r) { return true; }
             @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 android.net.Uri uri=request.getUrl();
@@ -59,6 +62,80 @@ public class MainActivity extends Activity {
         setContentView(container);
         web.loadUrl("file:///android_asset/index.html");
     }
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        if (pageReady) handleLaunchIntent();
+    }
+
+    private void handleLaunchIntent() {
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            android.net.Uri uri = intent.getData();
+            intent.setAction(null);
+            showEventImport(uri);
+        } else if (intent.getBooleanExtra("openSounds", false)) {
+            intent.removeExtra("openSounds");
+            web.evaluateJavascript("window.showSounds&&showSounds()", null);
+        }
+    }
+
+    private void eventImportMessage(String message) {
+        android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_LONG).show();
+    }
+
+    private void showEventImport(android.net.Uri uri) {
+        if (uri == null || !"content".equals(uri.getScheme())) {
+            eventImportMessage("请通过文件选择器打开倒数日 JSON 文件");
+            return;
+        }
+        if (importingEvents) {
+            eventImportMessage("请先完成当前倒数日导入");
+            return;
+        }
+        importingEvents = true;
+        imageWorker.execute(() -> {
+            try (java.io.InputStream in = getContentResolver().openInputStream(uri)) {
+                EventImport document = EventImport.read(in);
+                String preview = document.preview();
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    new AlertDialog.Builder(this).setTitle("导入倒数日").setMessage(preview)
+                            .setNegativeButton("取消", (dialog, which) -> importingEvents = false)
+                            .setOnCancelListener(dialog -> importingEvents = false)
+                            .setPositiveButton("确认导入", (dialog, which) -> importEvents(document)).show();
+                });
+            } catch (Exception e) {
+                String reason = e instanceof IllegalArgumentException || e instanceof java.io.IOException
+                        && !(e instanceof java.io.FileNotFoundException) ? e.getMessage() : null;
+                failEventImport(reason == null ? "无法读取倒数日，请选择有效的 JSON 文件" : reason);
+            }
+        });
+    }
+
+    private void importEvents(EventImport document) {
+        imageWorker.execute(() -> {
+            try {
+                EventImport.Merge result = Store.get(this).importEvents(document);
+                runOnUiThread(() -> {
+                    importingEvents = false;
+                    if (isFinishing() || isDestroyed()) return;
+                    String message = "已新增 " + result.added + " 项，跳过 " + result.skipped + " 项重复记录";
+                    web.evaluateJavascript("closeSheet();refresh();navigate('events');toast(" + JSONObject.quote(message) + ")", null);
+                });
+            } catch (Exception e) {
+                failEventImport(e.getMessage() == null ? "倒数日导入失败，请重试" : e.getMessage());
+            }
+        });
+    }
+
+    private void failEventImport(String message) {
+        runOnUiThread(() -> {
+            importingEvents = false;
+            if (!isFinishing() && !isDestroyed()) eventImportMessage(message);
+        });
+    }
+
     public class Bridge {
         @JavascriptInterface public void navigationHaptic() {
             if (!Store.get(MainActivity.this).navigationHapticsEnabled()) return;
@@ -117,15 +194,40 @@ public class MainActivity extends Activity {
                 catch(Exception e){documentBusy.set(false);callbackError("备份导出失败，请检查剩余空间");}
             });
         }
+        @JavascriptInterface public void chooseEventImport() {
+            runOnUiThread(() -> {
+                Intent pick = new Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE)
+                        .setType("*/*").putExtra(Intent.EXTRA_MIME_TYPES,
+                                new String[]{"application/json", "text/json", "text/plain", "application/octet-stream"});
+                try { startActivityForResult(pick, PICK_EVENTS); }
+                catch (ActivityNotFoundException e) { eventImportMessage("设备没有可用的文件选择器"); }
+            });
+        }
         @JavascriptInterface public void chooseBackup(){runOnUiThread(()->{pendingBackup=null;Intent pick=new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*").addCategory(Intent.CATEGORY_OPENABLE).putExtra(Intent.EXTRA_MIME_TYPES,new String[]{"application/zip","application/json","application/octet-stream"});startActivityForResult(pick,12);});}
         @JavascriptInterface public void discardBackup(){pendingBackup=null;}
         @JavascriptInterface public void restoreBackup(){
             BackupStore.Prepared selected=pendingBackup;pendingBackup=null;if(selected==null){callbackError("请重新选择备份文件");return;}
             imageWorker.execute(()->{try{BackupStore.restore(getApplicationContext(),selected);runOnUiThread(()->{if(!isDestroyed()){updateSystemColors();updateAwake();web.evaluateJavascript("window.backupRestored&&backupRestored("+selected.ui+")",null);}});}catch(Exception e){callbackError(e.getMessage()==null?"恢复失败，原数据已保留":e.getMessage());}});
         }
-        @JavascriptInterface public void saveStatsImage(String uri){
+        @JavascriptInterface public void saveStatsImage(String uri){ savePng(uri, "番茄-统计.png"); }
+        @JavascriptInterface public void saveEventImage(String uri){ savePng(uri, "番茄-倒数日.png"); }
+        private void savePng(String uri, String name){
             if(!documentBusy.compareAndSet(false,true))return;
-            try{byte[] bytes=decodeStatsImage(uri);runOnUiThread(()->{pendingWrite=bytes;createDocument("image/png","番茄-统计.png",13);});}catch(Exception e){documentBusy.set(false);callbackError("统计图片生成失败，请重试");}
+            try{
+                byte[] bytes=decodeStatsImage(uri);
+                runOnUiThread(()->{
+                    try{pendingWrite=bytes;createDocument("image/png",name,13);}
+                    catch(ActivityNotFoundException e){pendingWrite=null;documentBusy.set(false);callbackError("无法打开文件保存窗口");}
+                });
+            }catch(Exception e){documentBusy.set(false);callbackError("图片生成失败，请重试");}
+        }
+        @JavascriptInterface public void shareEventText(String text){
+            if(text==null||text.trim().isEmpty())return;
+            runOnUiThread(()->{
+                Intent send=new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT,text);
+                try{startActivity(Intent.createChooser(send,"分享倒数日"));}
+                catch(ActivityNotFoundException e){callbackError("未找到可以分享的应用");}
+            });
         }
         @JavascriptInterface public void clockMode(boolean enabled){runOnUiThread(()->{largeClock=enabled;setRequestedOrientation(enabled?android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE:android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);updateAwake();updateSystemColors();});}
         @JavascriptInterface public void focusSceneMode(boolean enabled,boolean fullscreen){runOnUiThread(()->{focusScene=enabled;sceneFullscreen=enabled&&fullscreen;updateAwake();updateSystemColors();});}
@@ -141,6 +243,10 @@ public class MainActivity extends Activity {
     private void callbackError(String message){runOnUiThread(()->{if(!isDestroyed())web.evaluateJavascript("window.backupFailed&&backupFailed("+JSONObject.quote(message)+")",null);});}
     @Override protected void onActivityResult(int request, int result, Intent intent) {
         super.onActivityResult(request,result,intent);
+        if (request == PICK_EVENTS) {
+            if (result == RESULT_OK && intent != null) showEventImport(intent.getData());
+            return;
+        }
         if(request==11||request==13){
             documentBusy.set(false);
             byte[] bytes=pendingWrite;pendingWrite=null;

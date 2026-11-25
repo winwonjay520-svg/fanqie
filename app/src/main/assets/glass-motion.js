@@ -1,51 +1,90 @@
 'use strict';
 (() => {
- const layer=document.createElement('div');layer.className='glass-flow-layer';layer.setAttribute('aria-hidden','true');document.body.appendChild(layer);
  const active=new Set(),byButton=new Map();
  const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
  function clear(){[...active].forEach(effect=>effect.remove());}
- function play(button,point){
+ function play(button,held=false){
   if(!button||button.disabled||button.getAttribute('aria-disabled')==='true'||!data?.appearance?.liquid||motionPreference.matches)return null;
   const box=button.getBoundingClientRect();
+  if(data.appearance.material==="eco"||button.closest(".bottom-nav")||!("scale" in button.style))return null;
   if(box.width<2||box.height<2||!button.isConnected||typeof button.animate!=='function')return null;
   if(byButton.has(button))byButton.get(button).remove();
   while(active.size>=6)active.values().next().value.remove();
-  const style=getComputedStyle(button),shell=document.createElement('div');shell.className='glass-flow';
-  Object.assign(shell.style,{left:box.left+'px',top:box.top+'px',width:box.width+'px',height:box.height+'px',borderRadius:style.borderRadius});
-  const x=Math.max(0,Math.min(box.width,point?.x??box.width/2)),y=Math.max(0,Math.min(box.height,point?.y??box.height/2));
-  const diameter=Math.hypot(box.width,box.height)*2;
-  const wave=document.createElement('i');wave.className='glass-flow-wave';
-  Object.assign(wave.style,{width:diameter+'px',height:diameter+'px',left:x-diameter/2+'px',top:y-diameter/2+'px'});
-  const sheen=document.createElement('i');sheen.className='glass-flow-sheen';
-  const spark=document.createElement('i');spark.className='glass-flow-spark';shell.append(wave,sheen,spark);layer.appendChild(shell);
-  const effects=[];let removed=false;
-  const effect={button,node:shell,remove(){if(removed)return;removed=true;effects.forEach(a=>a.cancel());shell.remove();active.delete(effect);if(byButton.get(button)===effect)byButton.delete(button);}};
+  const effects=[];
+  let removed=false,compression=null,pullX=0,pullY=0,pullFrame=0,strength=0;
+  const effect={button,release,pull,remove(){
+   if(removed)return;
+   removed=true;cancelAnimationFrame(pullFrame);resetPull();
+   effects.forEach(animation=>animation.cancel());
+   active.delete(effect);byButton.delete(button);
+  }};
   active.add(effect);byButton.set(button,effect);
-  const cheap=data.appearance.material==='eco',duration=cheap?420:820;
   function animate(node,frames,options){const animation=node.animate(frames,options);effects.push(animation);animation.finished.catch(()=>{});return animation;}
-  const main=animate(wave,[{transform:'scale(.03,.05)',opacity:.15,offset:0},{transform:'scale(.38,.25)',opacity:.95,offset:.3},{transform:'scale(.8,.61)',opacity:.48,offset:.64},{transform:'scale(1.16,.9)',opacity:0,offset:1}],{duration,easing:'cubic-bezier(.16,.7,.25,1)',fill:'forwards'});
-  animate(sheen,[{transform:'translateX(-52%) rotate(-7deg)',opacity:0},{transform:'translateX(-13%) rotate(-3deg)',opacity:.8,offset:.36},{transform:'translateX(52%) rotate(5deg)',opacity:0}],{duration,easing:'cubic-bezier(.22,.65,.3,1)',fill:'forwards'});
-  animate(spark,[{opacity:0},{opacity:.9,offset:.28},{opacity:0}],{duration,easing:'ease-out',fill:'forwards'});
-  if(!cheap&&!button.closest('.bottom-nav'))animate(button,[{transform:'scale(1)'},{transform:'scale(.976,.96)',offset:.24},{transform:'scale(1.013,1.01)',offset:.65},{transform:'scale(1)'}],{duration:430,easing:'cubic-bezier(.22,.7,.3,1)'});
-  main.finished.then(()=>effect.remove(),()=>effect.remove());return effect;
+   // Cap travel in pixels on wide tablet buttons.
+   const wide=Math.min(.09,8/box.width),deep=Math.min(.14,8/box.height);
+   compression=animate(button,[{scale:'1 1'},{scale:(1+wide)+' '+(1-deep)}],
+                        {duration:100,easing:'cubic-bezier(.18,.78,.22,1)',fill:'forwards'});
+  function resetPull(){
+   button.style.removeProperty('--pull-offset');
+   button.style.removeProperty('--pull-shape');
+   button.classList.remove('glass-pulled');
+  }
+  function pull(dx,dy,pressure){
+   const distance=Math.hypot(dx,dy);
+   if(removed||(distance<3&&!pullFrame&&!button.classList.contains('glass-pulled')))return;
+   strength=Math.min(1,distance/85+Math.max(0,pressure-.5)*.35);
+   const travel=12*(1-Math.exp(-distance/38));
+   pullX=travel*dx/(distance||1);pullY=travel*dy/(distance||1);
+   if(!pullFrame)pullFrame=requestAnimationFrame(()=>{
+    pullFrame=0;
+    compression?.cancel();
+    button.classList.add('glass-pulled');
+    const offset=pullX+'px '+pullY+'px';
+    button.style.setProperty('--pull-offset',offset);
+    const axis=(Math.abs(pullX)-Math.abs(pullY))/12;
+    const sx=1+axis*Math.min(.14,12/box.width), sy=1-axis*Math.min(.14,12/box.height);
+    button.style.setProperty('--pull-shape',sx+' '+sy);
+   });
+  }
+  function release(){
+   if(removed||!compression)return;
+   cancelAnimationFrame(pullFrame);
+   const [sx=1,sy=sx]=getComputedStyle(button).scale.split(' ').map(v=>parseFloat(v)||1);
+   const heldPull=button.classList.contains('glass-pulled');
+   compression.cancel();compression=null;
+   resetPull();
+   const wide=heldPull?sx-1:Math.max(sx-1,Math.min(.07,6/box.width));
+   const deep=heldPull?sy-1:Math.min(sy-1,-Math.min(.11,7/box.height));
+   const rebound=animate(button,liquidSpringFrames(k=>({
+    scale:(1+wide*k)+' '+(1+deep*k),translate:pullX*k+'px '+pullY*k+'px'
+   })),{duration:440+130*strength,easing:'linear'});
+   rebound.finished.then(effect.remove,()=>{});
+  }
+  if(!held)compression.finished.then(release,()=>{});
+  return effect;
  }
  let pressed=null;
  document.addEventListener('pointerdown',event=>{
   if(event.isPrimary===false||event.button>0)return;
   const button=event.target.closest('button,[role="button"]');if(!button)return;
-  const box=button.getBoundingClientRect(),effect=play(button,{x:event.clientX-box.left,y:event.clientY-box.top});
+  if(pressed)pressed.effect.remove();
+  const effect=play(button,true);
   pressed=effect?{id:event.pointerId,x:event.clientX,y:event.clientY,effect}:null;
  },{capture:true,passive:true});
- document.addEventListener('pointermove',event=>{if(pressed?.id===event.pointerId&&Math.hypot(event.clientX-pressed.x,event.clientY-pressed.y)>14){pressed.effect.remove();pressed=null;}},{passive:true});
+ document.addEventListener('pointermove',event=>{
+  if(pressed?.id===event.pointerId)pressed.effect.pull(event.clientX-pressed.x,event.clientY-pressed.y,event.pressure);
+ },{passive:true});
  document.addEventListener('pointercancel',event=>{if(pressed?.id===event.pointerId){pressed.effect.remove();pressed=null;}},{passive:true});
- document.addEventListener('pointerup',()=>{pressed=null;},{passive:true});
+ window.addEventListener('pointerup',event=>{
+  if(pressed?.id===event.pointerId){pressed.effect.release();pressed=null;}
+ },{capture:true,passive:true});
  document.addEventListener('click',event=>{
   if(event.detail===0){const button=event.target.closest('button,[role="button"]');if(button)play(button);}
   // A click may close a sheet or replace a whole page. Remove its old
-  // reflections before they are drawn over controls on the new screen.
+  // animations when their controls are no longer visible.
   if(active.size)requestAnimationFrame(()=>{
    for(const effect of active){
-    const box=effect.node.getBoundingClientRect();
+    const box=effect.button.getBoundingClientRect();
     const hit=document.elementFromPoint(box.left+box.width/2,box.top+box.height/2);
     if(!hit||!effect.button.contains(hit))effect.remove();
    }
@@ -53,6 +92,7 @@
  },{capture:true,passive:true});
  window.addEventListener('scroll',clear,{capture:true,passive:true});
  window.addEventListener('resize',clear,{passive:true});
+ window.addEventListener('blur',clear);
  document.addEventListener('visibilitychange',()=>{if(document.hidden){pressed=null;clear();}});
  if(motionPreference.addEventListener)motionPreference.addEventListener('change',clear);
  window.glassMotion={play,clear,get activeCount(){return active.size;}};
